@@ -1,0 +1,75 @@
+.view-module-syllabus{
+    @color:#4ac8d7;
+    .wrap-syllabus{
+        padding:20px;
+        ul.syllabus-titles{
+            padding:0;
+            overflow: hidden;
+            border-radius: 3px;
+            li{
+                &.active{
+                    background: @color;
+                    a{
+                        color:white;
+                        text-decoration:none;
+                    }
+                }
+                float: left;
+                width:14.286%;
+                padding:10px 0;
+                text-align: center;
+                border-right:1px solid @color;
+                border-top:1px solid @color;
+                border-bottom:1px solid @color;
+                &:first-child{
+                    border-left:1px solid @color;
+                }
+                &:last-child{
+                    border-radius:0 3px 3px 0;
+                }
+                a{
+                    color:@color;
+                    width:100%;
+                    height: 100%;
+                }
+            }
+
+        }
+        .tab-content{
+            ul{
+                padding:0;
+                li{
+                    padding:15px 10px 2px 5px;
+                    border-bottom: 1px solid #ddd;
+                    line-height: 30px;
+                }
+            }
+            .wrap-parts{
+                overflow: hidden;
+                font-size:18px;
+                height: 35px;
+                padding-right: 5px;
+                b{
+                    width:10%;
+                    float: left;
+                    color:#666;
+                }
+                p{
+                    width:25%;
+                    margin-left: 10px;
+                    float: left;
+                    text-align: left;
+                }
+                em{
+                    width:30%;
+                    float: left;
+                    text-align: left;
+                }
+                span{
+                    float: right;
+                    width: 30%;
+                }
+            }
+        }
+    }
+}

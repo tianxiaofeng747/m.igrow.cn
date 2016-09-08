@@ -1,0 +1,30 @@
+<!-- 班级假条 -->
+<div class="class-leave-wrapper">
+    <div class="leave-list">
+        <div class="leave-item ng-cloak"
+            ng-click="toDetailView('#/{{classid}}/class/leave/detail/{{data.id}}')" ng-repeat="data in dataList">
+            <div class="leave-type" ng-class="data._typeClass">
+                <span class="leave-type-txt">{{data.type.name}}</span>
+            </div>
+            <div class="leave-info">
+                <p class="leave-student">{{data.student.name}}</p>
+                <p class="leave-time">{{data.starttime*1000 | date:'MM-dd HH:mm'}}至{{data.endtime*1000 | date:'MM-dd HH:mm'}}</p>
+            </div>
+            <div class="leave-action">
+                <a class="leave-action-link" href="#/{{classid}}/class/leave/detail/{{data.id}}"
+                    ng-class="data._checkstatusClass">
+                    <span>{{data._checkstatus}}</span>
+                    <i class="iconfont icon-right "></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="no-data-box" ng-if="dataList.length==0">
+        <img alt="" src="/assets/img/public/none-inferior.gif">
+        <p>暂时没有内容，请稍候再来</p>
+    </div>
+    <div class="show-more-box" ng-show="dataList.length>0">
+        <span class="show-more-link ng-cloak" ng-click="showMore()" ng-if="flag">点击查看更多</span>
+        <span class="no-more-txt ng-cloak" ng-if="false == flag">没有更多了</span>
+    </div>
+</div>

@@ -1,0 +1,198 @@
+/*宝宝食谱*/
+@import "public.less";
+.view-module-recipe{
+    .panel-footer-public(){
+        position:absolute;
+        top:0;
+        right:0;
+        bottom:0;
+        left:0;
+    }
+    .panel-footer{
+        .panel-footer-public;
+        z-index:2;
+        top:auto;
+        border:0;
+        box-shadow:0 0 5px #ccc;
+        background-color:#4ac8d6;
+        border-radius:0;
+        +.panel-body{
+            .panel-footer-public;
+            bottom:48px;
+            overflow:auto;
+            > .list-group{
+                margin-bottom:15px;
+            }
+            padding:0;
+        }
+        .btn{
+            padding:0 15%;
+            color:#fff;
+            > .icon-add{
+                font-size:24px;
+            }
+        }
+    }
+    .panel-body{
+        .upload-form{ position: absolute;width: 100%; height: 100%;
+        .form-photo-list{margin-bottom:5px;}
+        }
+    }
+    .detail();
+    .padding-10{
+        padding: 10px 0;
+    }
+    .list-group-item{
+        margin-top:10px;
+        padding-bottom:15px;
+        padding-top:0;
+        border-color:#fff;
+        border-radius:0;
+        cursor:pointer;
+        >a{
+            display:block;
+            color:#666;
+            text-decoration:none;
+        }
+        p.text-muted{
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size:16px;
+        }
+        h4{
+            display:block;
+            margin-top:30px;
+            padding:0 15px;
+            font-size:18px;
+            color:#666;
+        }
+        @loader:'../../img/public/loader.gif';
+        @lost:'../../img/public/img-lost.png';
+
+        .row{
+            padding:0;
+            margin:0;
+            .col-xs-4{
+                padding:0;
+                a{
+                    position:absolute;
+                    top:2px;
+                    right:2px;
+                    bottom:2px;
+                    left:2px;
+                    overflow:hidden;
+                    >span{
+                        position:absolute;
+                        top:0;
+                        right:0;
+                        bottom:0;
+                        left:0;
+                        background:url(@loader) center center no-repeat;
+                        &.lost{
+                            background-image:url(@lost);
+                        }
+                    }
+                }
+            }
+            .col-xs-12{
+                padding:0 20px;
+                text-align:center;
+                &:last-child{
+                    padding-bottom:0;
+                }
+                img{
+                    width:100%;
+                    margin-bottom:30px;
+                }
+                span{
+                    display:inline-block;
+                    min-width:32px;
+                    min-height:32px;
+                    background:url(@loader) center center no-repeat;
+                    &.lost{
+                        background-image:url(@lost);
+                    }
+                }
+            }
+        }
+        p:last-child{
+            margin-bottom:0;
+        }
+        &:first-child{
+            margin-top:0;
+        }
+    }
+    .textwrap(){
+        white-space:pre-wrap;
+        word-wrap:break-word;
+        box-sizing:border-box;
+    }
+    .form-group{
+        input,textarea{
+            border:0;
+            border-bottom:1px solid #dadada;
+            padding-left:0;
+            box-shadow:none;
+            -webkit-box-shadow:none;
+            border-radius:0;
+            -webkit-border-radius:0;
+        }
+        .btn-normal{ width: 92%; &:hover{ color: #fff;}}
+    }
+    .form-public(){
+        float:left;
+        margin:0 15px 15px 0;
+        padding:0;
+    }
+    @yellow:#ffc600;
+    .wxsend{
+        padding: 10px 0; color: #777;
+        i{font-size: 24px; cursor: pointer;}
+        i.text-success{ color: #4ac8d7; }
+    }
+    .form-control{
+        font-family:'Microsoft YaHei',Tahoma,Arial,sans-serif;
+
+    }
+    .form-content{
+        position:relative;
+        width:100%;
+        overflow:hidden;
+        .form-input(){
+            width:100%;
+            margin:0;
+            .textwrap;
+        }
+        textarea{
+            position:absolute;
+            z-index:1;
+            top:0;
+            left:0;
+            height:100%;
+            resize:none;
+            .form-input;
+        }
+        pre{
+            float:left;
+            height:auto;
+            min-height:100px;
+            opacity:0;
+            filter:alpha(opacity=0);
+            text-align:start;
+            visibility:hidden;
+            .form-input;
+        }
+    }
+    .modal-footer{
+        padding:10px 20px;
+        .btn{
+            padding:5px 20px;
+        }
+    }
+    .warp-recipe-content{
+        padding:5px 15px 5px;
+        background:white;
+        border-bottom:1px solid #ddd;
+    }
+}

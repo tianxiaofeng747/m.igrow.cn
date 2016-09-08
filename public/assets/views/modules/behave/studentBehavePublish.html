@@ -1,0 +1,55 @@
+
+<div class="news-publish-wrapper" >
+    <div class="publish-form-box" style="margin:0;">
+        <div class="publish-textarea-box">
+            <textarea name="content" class="publish-textarea-field" ng-model="textLen" placeholder="说两句吧.." id="content"></textarea>
+        </div>
+
+        <div class="publish-actions-box clearfix">
+            <span class="expreSelect"><i class="iconfont icon-emoji"></i></span>
+            <span class="pull-right">/500字</span>
+            <span class="publish-text-count pull-right" id="pText" ng-bind="textLen.length || 0"></span>
+            <!-- <span class="publish-cancel-btn" ng-click="goBack()">取消</span> -->
+        </div>
+        <div class="publish-photos-wrapper" ng-show="!isAndroid" >
+            <div class="publish-photo-list clearfix">
+                <div class="publish-photo-box" ng-repeat=" photo in photoList ">
+                    <div class="publish-photo-cut" ng-click="previewPicture(photo)">
+                        <img ng-src="{{ photo.thumbnail }}" alt="" data-original="{{ photo.url }}">
+                    </div>
+                    <div class="publish-photo-mask" ng-click="previewPicture(photo)" ng-hide="photo.status == 'success'">
+                        <span class="publish-photo-status" ng-bind="photo.statusText" ng-class="{success:'photo-status-success', error:'photo-status-error'}[photo.status]"></span>
+                    </div>
+                    <!--<a href="javascript:void(0)" class="publish-file-remove ng-cloak" ng-click="removePhoto(photo)" ng-show="photo.url" title="移除照片">移除</a>-->
+                </div>
+
+                <div class="publish-file-add publish-photo-box publish-photo-add" data-web-uploader="behavePhoto" title="添加照片" ng-show="photoList.length<photoLimit">
+                    <i class="iconfont icon-add"></i>
+                </div>
+            </div>
+            <!-- <div class="publish-tips">最多可上传9张图片</div> -->
+
+            <!-- status model -->
+            <div class="modal fade user-album-modal" id="previewPictureModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body" data-dismiss="modal">
+                            <img src="/assets/img/public/loader.gif" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:;" class="iconfont icon-delete" ng-click="removePicture()" data-dismiss="modal"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 表情 -->
+    <div class="expreList"></div>
+    <span class="publish-send-btn" ng-click="send()" ng-disabled="behavePhoto.uploading">发送</span>
+
+
+
+
+
+</div>

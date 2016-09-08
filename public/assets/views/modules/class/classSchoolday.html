@@ -1,0 +1,46 @@
+<!-- 班级请假考勤 -->
+<div class="class-schoolday-wrapper">
+	<div class="class-schoolday-nav clearfix">
+		<div class="schoolday-nav-item">
+			<div class="nav-item-content">
+				<div class="nav-item-count">{{stat.sumleavecount}}</div>
+				<div class="nav-item-title">请假</div>
+			</div>
+		</div>
+		<div class="schoolday-nav-item">
+			<div class="nav-item-content">
+				<div class="nav-item-count">{{stat.sumearlycount}}</div>
+				<div class="nav-item-title">早退</div>
+			</div>
+		</div>
+		<div class="schoolday-nav-item">
+			<div class="nav-item-content">
+				<div class="nav-item-count">{{stat.sumlatercount}}</div>
+				<div class="nav-item-title">迟到</div>
+			</div>
+		</div>
+		<div class="schoolday-nav-item">
+			<div class="nav-item-content">
+				<div class="nav-item-count">{{stat.sumtruancycount}}</div>
+				<div class="nav-item-title">旷课</div>
+			</div>
+		</div>
+	</div>
+
+	<ul class="class-schoolday-menu round">
+		<li class="schoolday-menu-item" data-role="link" ng-click="toClassAttendance()">
+		<div class="menu-item-icon"><i class="iconfont icon-vipcard"></i></div>
+		<div class="menu-item-title">学生考勤</div>
+		<div class="menu-item-arrow arrow" ></div>
+		</li>
+	</ul>
+	<ul class="class-schoolday-menu round">
+		<li class="schoolday-menu-item" data-role="link" ng-click="toClassLeave()">
+			<div class="menu-item-icon"><i class="iconfont icon-pencil"></i></div>
+			<div class="menu-item-title">学生请假</div>
+			<div class="menu-item-arrow arrow"></div>
+		</li>
+	</ul>
+
+
+</div>

@@ -1,0 +1,230 @@
+<div class="view-module-notice view-module-classaction" ng-controller="m.classaction.controller as control">
+
+    <div ng-if="!control.articleID">
+
+        <div class="tab-content" style="background:#F3f3f3;">
+
+            <!--选择班级-->
+            <div class="panel-body" ng-if="control.action=='select'">
+                <div class="list-group" id="classListGroup">
+                    <a ng-href="/#/m/classaction/{{item.id}}" class="list-group-item"
+                       ng-repeat="item in control.classData">
+                        <span>{{item.name}}</span>
+                        <i class="iconfont icon-right"></i>
+                    </a>
+
+                    <div class="text-center" ng-if="control.classData.length===0">
+                        没有班级
+                    </div>
+                </div>
+                <div>
+                    <a href="/#/m/classaction/new" class="btn btn-lg btn-block"
+                       ng-if="control.classData.length&&control.auth.C">
+                        <i class="iconfont iconfont-edit"></i>
+                        新发布
+                    </a>
+                </div>
+            </div>
+
+            <!--发布通知-->
+            <div class="publish panel-body ng-cloak" ng-if="control.action=='new'">
+                <div class="choose-class" ng-show="control.isChooseClass">
+                    <div class="form-group">
+                        <ul>
+                            <li ng-click="control.posts.click('classes')">
+                                <i href="javascript:;" class="iconfont icon-roundcheckfill" ng-if="control.classData.length>1"
+                                   ng-class="{active:control.posts.classes.all}"
+                                        ></i>
+                                <span>全选</span>
+                            </li>
+                            <li ng-repeat="item in control.classData" ng-click="control.posts.click('classes',item.id)">
+                                <i href="javascript:;" class="iconfont icon-roundcheckfill"
+                                   ng-class="{active:control.posts.classes[item.id]}" ></i>
+                                <span ng-bind="item.name"></span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-lg btn-block" ng-click="control.getChooseClass()">确定</button>
+                    </div>
+                </div>
+                <div class="publish-bgcolor mt0" ng-show="!control.isChooseClass">
+                    <div class="form-group position-relative" ng-if="control.classData.length&&control.posts.type&&control.posts.type!==3">
+                        <span class="choose-class-btn" ng-click="control.isChooseClass = true"><i class="iconfont icon-add"></i></span>
+                        <input type="text" class="form-control" placeholder="请选择班级" ng-model="control.posts.chooseClassName" readonly />
+                        <!--<div class="choose-class-list" ng-bind="control.posts.chooseClassName"></div>-->
+                    </div>
+                    <div class="form-group" ng-if="control.posts.type">
+                        <input type="text" class="form-control" placeholder="请输入标题" ng-model="control.posts.title"/>
+                    </div>
+                    <div class="form-group" ng-if="control.posts.type">
+                        <textarea class="form-control" rows="5" placeholder="请输入内容" ng-model="control.posts.content"></textarea>
+                    </div>
+                    <!--  图片上传 -->
+                    <div class="form-group form-photo-list clearfix ng-hide">
+                        <div class="form-photo-item" ng-repeat="pid in control.photo.list"
+                             ng-click="control.previewPicture(control.photo.queued[pid])">
+                            <img ng-show="control.photo.queued[pid].src" ng-src="{{control.photo.queued[pid].src}}"/>
+                            <span ng-show="control.photo.queued[pid].ready" class="upload-ready"><b>等待</b></span>
+                            <span ng-show="control.photo.queued[pid].progress"
+                                  ng-bind="control.photo.queued[pid].progress"></span>
+                            <span ng-show="control.photo.queued[pid].error" class="upload-error"><b>失败</b></span>
+                        </div>
+                        <div class="form-webuploader iconfont icon-add" data-web-uploader="control.photo"
+                             ng-hide="control.photo.list.length>=9"></div>
+                        <!-- <p class="publish-tips">最多添加9张图片</p> -->
+                    </div>
+                     
+                    <div class="form-group check wxsend clearfix" ng-if="control.isBusiness">
+                        <i ng-click="control.posts.wxSend=!control.posts.wxSend" ng-class="{true:'on',false:''}[control.posts.wxSend]" class="pull-right"><span></span></i>微信推送
+                    </div>
+                </div>
+                <div class="btn-wrap mt15" ng-show="!control.isChooseClass">
+                    <button type="button" class="btn btn-lg btn-block" ng-if="control.posts.type"
+                            ng-disabled="control.photo.uploading" ng-click="control.send()">发送
+                    </button>
+                </div>
+                <!-- status model -->
+                <div class="modal fade user-album-modal" id="previewPictureModal" tabindex="-1" role="dialog"
+                     aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body" data-dismiss="modal">
+                                <img id="previewImage" ng-src="{{control.previewData.url}}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="javascript:;" class="iconfont icon-delete" ng-click="control.removePicture()"
+                           data-dismiss="modal"></a>
+                    </div>
+                </div>
+
+            </div>
+            <!--班级动态-->
+            <div ng-show="control.action == 'class'" class="action-list tab-pane active">
+                <div class="no-data-box ng-cloak" ng-show="control.classactionData.news.length===0">
+                    <img src="/assets/img/public/none.gif" alt="">
+
+                    <p>暂时没有内容</p>
+                </div>
+                <div class="list-group-wrap">
+                    <div class="list-group action-class-list" id="news">
+                        <dl>
+                            <dd ng-repeat="item in control.classactionData.news">
+                                <div class="class-new-item">
+                                    <a href="/#/m/classaction/news/{{item.id}}" >
+                                        <span class="img" ng-style="item.style"></span>
+                                        <div class="item-txt">
+                                            <div>
+                                                <span ng-bind="item.title"></span>
+                                                <b >{{item.createtime*1000|date:'yyyy-MM-dd'}}</b>
+                                            </div>
+                                            <p ng-bind="item.content"></p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </dd>
+                            <!--<dd ng-show="control.classactionData.news && !control.classactionData.news.length">
+                                <div class="class-noMore-item">
+                                    <p>- 暂无动态 -</p>
+                                </div>
+                            </dd>-->
+                            <dd ng-if="control.classactionData.news.loading">
+                                <div class="class-noMore-item">
+                                    <p>正在加载...</p>
+                                </div>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+
+                <div class="new-publish panel-body">
+                    {{control.skipPublish}}
+                    <a ng-if="control.showSend&&control.auth.C" ng-click="control.skipPublish()" href="javascript:;"
+                       class="btn btn-lg btn-block">
+                        <i class="iconfont icon-add"></i>
+                        新发布
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--通知详情-->
+    <div ng-if="control.articleID&&control.contentData">
+
+        <div class="detail-title">
+            <h4 ng-bind="control.contentData.title||'通知'"></h4>
+            <a href="javascript:void(0)" class="del"
+               data-toggle="modal" data-target="#del"
+               ng-if="control.schoolManager||control.contentData.isauth"><i class="glyphicon glyphicon-trash"></i></a>
+            <p class="detail-title-publish">发布人：<span ng-bind="control.contentData.publish.realname"></span></p>
+            <span ng-if="control.action=='school'&&control.contentData.isauth">阅读({{control.contentData.readcount||0}}/{{(control.contentData.readcount||0)+(control.contentData.unreadcount||0)}})&nbsp;&nbsp;</span>
+            <span ng-bind="control.contentData.createtime*1000|date:'yyyy-MM-dd'"></span>
+        </div>
+        <div class="detail-cont panel-body">
+            <div class="article-content" ng-bind-html="content" youku-ad-remove="content"></div>
+            <div class="homework-attachment" >
+                <div class="homework-attachment-list" ng-repeat="item in control.contentData.config | filter:{type:1}">
+                    <div ng-if="item.fileType=='mp4'" ng-show="!item.mp4" class="clsd-media-video" >
+                        <a href="javascript:void(0);"  class="video-player" ng-click="showMedia(item)"></a>
+                    </div>
+                    <div ng-show="item.mp4" ng-if="item.fileType=='mp4'" class="videojs">
+                        <video id="{{control.str}}" class="video-js vjs-default-skin" controls preload="none" width="100%" height="264"
+                               poster="" data-setup="{}">
+                            <source id="source{{item.name}}" type="video/mp4" />
+                        </video>
+                    </div>
+                </div>
+            </div>
+            <div class="homework-attachment" ng-if="control.contentData.hasAttachment">
+                <div class="homework-attachment-headline">附件：</div>
+                <div class="homework-attachment-list" ng-repeat="item in control.contentData.config | filter:{type:1}">
+                    <a href="{{item.url}}" class="homework-attachment-item"
+                       ng-if="item.fileType!='mp3'&&item.fileType!='mp4'" data-role="photoItem">
+                        <div class="homework-attachment-thumb" style="background: url('/assets/img/class/fileBig.png') no-repeat center;">
+                        </div>
+                        <div class="homework-attachment-info">
+                        <span class="homework-attachment-name">
+                            {{ item.name }}
+                        </span>
+                            <span class="homework-attachment-arrow"></span>
+                        </div>
+                    </a>
+                    <a ng-click="playAudio(item)" class="homework-attachment-item" ng-if="item.fileType=='mp3'"
+                       data-role="photoItem">
+                        <audio id="{{item.url}}"></audio>
+                        <div class="homework-attachment-thumb" ng-class="{'play':item.playing}">
+                        </div>
+                        <div class="homework-attachment-info">
+                        <span class="homework-attachment-name">
+                            {{ item.name }}
+                        </span>
+                        </div>
+                        <img class="small-icon" ng-src="/assets/img/class/MP3.png">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal - 删除确认 -->
+    <div id="del" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <b>确认删除当前信息吗？</b>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" ng-click="control.contentData.remove()">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

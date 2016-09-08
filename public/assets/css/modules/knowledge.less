@@ -1,0 +1,56 @@
+/* 亲子学堂*/
+@import "public.less";
+.view-module-knowledge{
+    .fl{float:left;}
+    .fr{float:right;}
+
+    .clearfix:after{clear:both; content:"."; display:block; height:0; visibility:hidden;}
+    .clearfix{*zoom:1;}
+    background:#fff; width:100%; height:100%;
+    .wrap{margin:0 auto;
+        .innerwrap{padding:0 4%;}
+    }
+    .filterbar-inner-wrapper {
+        box-sizing: border-box;
+        overflow: auto;
+        width: 100%;
+        background:#70d1dd;
+    }
+    .filterbar-inner-item {
+        box-sizing: border-box;
+        float: left;
+        position: relative;
+        text-align:center;
+        overflow:hidden;
+        a{display:inline-block; text-align:center;font-size:14px; padding:15px; color:#fff;text-decoration:none; overflow:hidden;}
+        &.active{
+            a{color:#333; background:#eee;}
+        }
+    }
+    /*班级列表*/
+    .innerwrap .list{margin:10px auto 0; padding-left:0; height:100%; width:100%;
+        li{ border:1px solid #eee; padding:10px; margin:0 0 10px 0; background:#F7F7F7;
+            a{display:block; width:100%; height:100%; color:#6F6F6F;
+                img{display:inline-block; width:50px; height:50px; border-radius:25px;}
+                span{display:inline-block; width:170px; height:30px; white-space:nowrap; text-overflow:ellipsis; overflow:hidden; margin:12px 0 0 15px; font-size:1.3em;}
+                i{width:12px; height:22px; margin:18px 10px 0 0; background: url(/assets/img/public/arrow.png) no-repeat 0 0; background-size: 12px 22px; /* border-top:1px solid #cfcece; border-right:1px solid #cfcece;  transform:rotate(45deg); */}
+            }
+        }
+    }
+    /*文章列表*/
+    .articleList{padding-left:0;
+        li{
+            a{display:block; width:100%; height:100%; padding:12px 10px 10px; border-bottom:1px solid #eee; color:#6F6F6F; background: url(/assets/img/public/read_icon.jpg) no-repeat 98% 85%; background-size: 35px 35px;
+                img{display:inline-block; width:110px; height:90px;}
+                .intro{width:48%; height:96px; line-height: 20px; margin:-2px 0 0 3%;
+                    img{display:none;}
+                    h3{color:#333; font-size:1.2em; margin:0 0 15px 0; height:18px; white-space:nowrap; text-overflow:ellipsis;  overflow:hidden;}
+                    .introContent{height:60px; overflow:hidden;}
+                }
+            }
+        }
+    }
+
+    /*文章详细页*/
+    .detail();
+}

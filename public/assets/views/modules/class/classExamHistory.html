@@ -1,0 +1,31 @@
+<!-- 班级历史考试 -->
+<div class="class-exam-wrapper" >
+    <div class="class-exam-header">
+        <div class="class-course-list">
+            <span class="class-course-item" ng-repeat="course in courseList" ng-bind="course.name" ng-click="courseChange(course)" ng-class="{true:'active'}[course._active]"></span>
+        </div>
+    </div>
+    <div class="class-exam-list">
+        <div class="no-data-box" ng-if="examList.length === 0" >
+            <img alt="" src="/assets/img/public/none-inferior.gif">
+            <p>暂时没有学生成绩</p>
+        </div>
+        <div class="class-exam-item" ng-repeat="data in examList" ng-click="redirectToExamResult(data)" data-role="link">
+            <div class="class-exam-info">
+                <p class="class-exam-title" ng-bind="data.exam.name"></p>
+                <p class="class-exam-time">{{ data.exam.date*1000 | date:'MM-dd' }}</p>
+            </div>
+            <div class="class-exam-result">
+                <p class="">平均分</p>
+                <p class="class-exam-score exam-score-A" ng-bind="data.avgscore" ></p>
+            </div>
+            <div class="class-course-info">
+                <div class="class-course-level course-score-A">满分 <span ng-bind="course._config.A"></span></div>
+                <div class="class-course-level course-score-B">优秀 <span ng-bind="course._config.B"></span></div>
+                <div class="class-course-level course-score-C">良好 <span ng-bind="course._config.C"></span></div>
+                <div class="class-course-level course-score-D">及格 <span ng-bind="course._config.D"></span></div>
+            </div>
+        </div>
+    </div>
+
+</div>

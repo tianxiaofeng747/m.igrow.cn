@@ -1,0 +1,257 @@
+@import "public.less";
+.view-module-schoolMenu{
+    position: absolute;
+    width: 100%;height:100%;background-color: #fff;
+    .swiper-container{
+        .img{ width: 100%; background-position: center center; background-repeat: no-repeat; display: block; background-size: 100%;}
+    }
+    .nav{ background-color: #fff;}
+    .nav-item{
+        float:left;
+        width:50%;
+        border-left:1px solid #f0f0f0;
+        border-bottom:1px solid #f0f0f0;
+        cursor:pointer;
+        box-sizing:border-box;
+        a{
+            display:block;
+            padding:10px 0;
+            color:#6b6b6b;
+        }
+        span{
+            display:block;
+            text-align:center;
+        }
+    }
+    .nav-item:first-child{
+        border-left:1px solid transparent;
+    }
+    .nav-item:last-child{
+        margin-left:0;
+    }
+    .nav-item.active{
+        a{
+            & > i{
+                background:#4ac8db;
+                & > span{
+                    color:white;
+                }
+            }
+        }
+    }
+    .nav-icon{
+        font-size:32px;
+        line-height: 32px;
+        padding-top:18px;
+        color:#fff;
+    }
+    .wrap-icon{
+        border-radius:50%;
+        -webkit-border-radius:50%;
+        color:#4ac8d6;
+        width:70px;
+        height:70px;
+        display:block;
+        margin:5px auto;
+    }
+    .icon1 {background-color: #ff9e13; }
+    .icon2 {background-color: #11cfdf; }
+    .nav-txt{
+        color:#333;
+        font-size:14px;
+    }
+    //学校动态列表
+    .class-action{
+        @iconWidth:80px;
+        background:#fff;         
+        .newList();
+    }
+    #previewPictureModal{
+            .modal-dialog{
+                position:absolute;
+                width:auto;
+                margin:-27px 0 0;
+                top:50%;
+                left:50%;
+                transform:translate(-50%, -50%) !important;
+                -webkit-transform:translate(-50%, -50%) !important;
+            }
+        }
+        #previewPictureModal .modal-content{
+            border:0;
+            background:none;
+            box-shadow:none;
+            -webkit-box-shadow:none;
+            .modal-body{
+                text-align:center;
+            }
+        }
+        #previewPictureModal .modal-footer{
+            position:absolute;
+            width:100%;
+            padding:15px;
+            text-align:center;
+            background:#394345;
+            border:0;
+            bottom:0;
+            border-radius:0;
+            -webkit-border-radius:0;
+            > a{
+                color:white;
+                font-size:22px;
+            }
+        }
+
+    //neirong
+    .detail();
+    .detail-article{
+        background-color: #fff;
+        padding: @outMargin;
+        color: #444;
+        line-height: 26px;
+    }
+    .detail-plus{
+        margin: 0 15px;
+    }
+    .panel-body {
+        bottom: 0;left: 0; padding: 0; position: fixed; right: 0;top: auto; z-index: 2;
+        .btn {
+            background-color: #4ac8d6;
+            color: #fff;
+            border-radius: 0;
+            padding: 12px;
+            font-size: 18px;
+            i{ font-size: 18px;}
+        }
+    }
+    .tab-content{         
+        overflow:hidden;
+        .publish-header{
+            background:white;
+            padding:0 15px 0;
+            border-top:1px solid #e3e3e3;
+            border-bottom:1px solid #e3e3e3;
+            .form-photo-list{
+                margin-bottom:12px;
+            }
+        }
+        .form-group input {
+            border-radius: 0;
+            height: 40px;
+        }
+        .form-control{
+            border-bottom:1px solid #e3e3e3;
+            border-top:0;
+            border-left:0;
+            border-right:0;
+            padding-left:0;
+            font-size: 14px;
+            box-shadow:none;
+            -webkit-box-shadow:none;
+            background:white;
+        }
+        .publish-bgcolor{
+            overflow:hidden;
+            background:white;
+            padding:15px;
+            .form-control{
+                border:1px solid #ccc;
+                border-radius:0;
+                box-shadow:none;
+                -webkit-box-shadow:none;
+            }
+        }
+        .form-group.check{
+            line-height:30px;
+            height:32px;
+            font-size:14px;
+            margin:0 0 10px 0;
+            i.on{
+                display:block;
+                width:65px;
+                height:28px;
+                background:#4AC8D6;
+                border-radius:14px;
+                margin:2px 0 0 0;
+                span{display:block; width:26px; height:26px; border-radius:13px; float:right; margin:1px 1px 0 0; background:#fff;}
+            }
+            i{
+                display:block;
+                width:65px;
+                height:28px;
+                background:#BEBEBE;
+                border-radius:14px;
+                margin:2px 0 0 0;
+                span{display:block; width:26px; height:26px; border-radius:13px; float:left; margin:1px 0 0 1px; background:#fff;}
+            }
+        }
+        .tab-pane{
+            float:left;
+            width:100%;
+            height:100%;
+            overflow-x:hidden;
+            overflow-y:auto;
+            .list-group-wrap{
+                position:absolute;
+                left:0;
+                top:0;
+                right:0;
+                bottom:46px;
+                .list-group{
+                    position:absolute;
+                    left:0;
+                    top:0;
+                    right:0;
+                    bottom:0;
+                    width:100%;
+                    height:100%;
+                    overflow-x:hidden;
+                    overflow-y:auto;
+                }
+            }
+            .panel-body{
+                position:absolute;
+                top:0;
+                right:0;
+                bottom:0;
+                left:0;
+                z-index:2;
+                top:auto;
+                padding:0;
+                a{
+                    border-radius:0;
+                    i{
+                        font-size:24px;
+                    }
+                }
+
+            }
+
+        }
+        .btn{
+            background:#4ac8d6;
+            color:white;
+            margin:20px auto;
+            width:90%;
+        }
+    }
+    .tab-detail{
+        background-color: #fff;
+        .detail-title-publish{ padding-right: 10px; display: inline-block; color: #888; margin-bottom: 0;}
+        .detail-title{
+            padding:10px @outMargin;
+            &>a.del{ float: right; color: #666;}
+        }
+        .detail-cont{
+            padding: @outMargin;
+        }
+    }
+
+    #del .modal-footer{
+        text-align: center;
+    }
+    .noshadow{
+        -webkit-appearance:caret;
+        -moz-appearance:caret;
+    }
+}

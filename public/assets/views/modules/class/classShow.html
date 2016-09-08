@@ -1,0 +1,193 @@
+<!-- 班级风采  遗弃模块-->
+<div class="class-show-wrapper" >
+    <div class="header">
+        <div class="banner">
+            <img ng-src="/assets/img/student/header-show-bg.jpg" width="100%">
+        </div>
+        <div class="header-info">
+            <p><span ng-bind="classData._className"></span></p>
+
+        </div>
+    </div>
+    <ul class="nav clearfix">
+        <li class="nav-item" data-tab="info">
+            <a href="{{tab.info}}" >
+                <span class="nav-icon iconfont icon-edit"></span>
+                <span class="nav-txt">班级简介</span>
+            </a>
+        </li>
+        <li class="nav-item" data-tab="album">
+            <a  href="{{tab.album}}" >
+                <span class="nav-icon iconfont icon-camera"></span>
+                <span class="nav-txt">班级相册</span>
+            </a>
+        </li>
+        <li class="nav-item" data-tab="work">
+            <a  href="{{tab.work}}">
+                <span class="nav-icon iconfont icon-evaluate"></span>
+                <span class="nav-txt">学生作品</span>
+            </a>
+        </li>
+        <li class="nav-item" data-tab="star">
+            <a  href="{{tab.star}}">
+                <span class="nav-icon iconfont icon-favor"></span>
+                <span class="nav-txt">班级明星</span>
+            </a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <!-- 班级介绍 -->
+        <div class="tab-pane" id="classInfo" data-tab="info">
+            <div class="class-info-box">
+                <p>班级介绍：</p>
+                <p ng-bind="classInfo._content">
+
+                </p>
+            </div>
+            <div class="class-teacher-list">
+                <div class="class-teacher-item" ng-repeat="teacher in classInfo._teacherList">
+                    <div class="class-teacher-avatar">
+                        <img ng-src="{{ teacher._avatar }}" alt="">
+                    </div>
+                    <div class="class-teacher-info">
+                        <p ng-bind="teacher._type"></p>
+                        <p ng-bind="teacher.name"></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- 班级相册 -->
+        <div class="tab-pane" id="classAlbum" data-tab="album">
+            <div class="class-album-list">
+                <a class="class-album-item" ng-repeat="album in classAlbumList" ng-style="{width:album._width}" ng-href="#/class/show/album/{{album.id}}" title="{{album.name}}">
+                    <div class="class-album-bg" ng-style="{ width:album._width,height:album._width }"></div>
+                    <div class="class-album-cover" ng-style="{ width:album._width,height:album._width }">
+                        <img ng-src="{{ album._cover }}" alt="" img-error />
+                    </div>
+                    <div class="class-album-info">
+                        <span ng-bind="album._name"></span><span class="class-album-photocount">({{ album.photocount }})</span>
+                    </div>
+                </a>
+            </div>
+            <div class="no-data-box ng-cloak" ng-show="classAlbumList.length==0">暂时没有照片</div>
+        </div>
+
+
+        <!-- 学生作品 -->
+        <div class="tab-pane" id="studentWork" data-tab="work">
+            <div class="student-work-list">
+                <div class="student-work-item" ng-repeat="studentwork in studentWorkList">
+                    <div class="student-work-avatar">
+                        <img ng-src="{{ studentwork.auther._avatar }}" alt="">
+                    </div>
+                    <div class="student-work-info" ng-click="toStudentwokDetail($event,studentwork.id)">
+                        <p class="student-work-name" ng-bind="studentwork.author"></p>
+                        <p class="student-work-tips">{{ studentwork._time }}</p>
+                        <p class="student-work-content">{{ studentwork.title }}</p>
+                        <div class="student-work-photos m-photo-list" data-role="photoList">
+                            <span class="m-photo-item" ng-repeat="photo in studentwork._photos" data-role="photoItem">
+                                <img ng-src="{{ photo.url + '!square.75' }}" alt="" data-original="{{ photo.url }}" img-error />
+                            </span>
+                        </div>
+                        <div class="m-media-list" >
+                            <div class="m-media-item m-media-player" ng-repeat="video in studentwork._videos" data-role="media" data-source="{{video.url}}" data-type="video">
+                                <div class="m-media-poster" data-role="poster">
+                                    <img src="/assets/img/public/no-cover-135.jpg" alt="">
+                                    <span class="m-media-icon"></span>
+                                </div>
+                                <div class="m-media-show" data-role="show">
+                                    <div class="m-media-remove" data-role="remove">收起</div>
+                                    <div class="m-media-play" data-role="play"></div>
+                                </div>
+                            </div>
+                            <div class="m-media-item m-media-player" ng-repeat="audio in studentwork._audios" data-role="media" data-source="{{audio.url}}" data-type="audio">
+                                <div class="m-media-poster" data-role="poster">
+                                    <img src="/assets/img/public/no-cover-135.jpg" alt="">
+                                    <span class="m-media-icon"></span>
+                                </div>
+                                <div class="m-media-show" data-role="show">
+                                    <div class="m-media-remove" data-role="remove">收起</div>
+                                    <div class="m-media-play" data-role="play"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="student-work-others">
+                            <p><a ng-href="{{ other.url }}" ng-repeat="other in studentwork._others">{{ other.name }}</a></p>
+                        </div>
+
+                       <!-- <div class="student-work-actions">
+                            <a class="student-work-zan" href="javascript:void(0)"><i class="fa fa-heart-o"></i><em>0</em></a>
+                            <a class="student-work-comment" href="#/student/work/{{ studentwork.id }}"><i class="fa fa-comment-o"></i><em>0</em></a>
+                        </div>-->
+
+                    </div>
+
+                </div>
+                <!-- <div class="student-work-item">
+                    <div class="student-work-avatar">
+                        <img src="/assets/data/avatar.jpg" alt="">
+                    </div>
+                    <div class="student-work-info">
+                        <p class="student-work-name">啊啊啊</p>
+                        <p class="student-work-tips">5-3 12:22</p>
+                        <p class="student-work-content">看生的法律，富士康的法律拉盛发快递死灵法师，发顺丰</p>
+                        <div class="student-work-photos m-photo-list" >
+                            <span class="m-photo-item">
+                                <img src="/assets/data/avatar.jpg" alt="">
+                            </span>
+                            <span class="m-photo-item">
+                                <img src="/assets/data/avatar.jpg" alt="">
+                            </span>
+                        </div>
+                        <div class="student-work-videos m-video-list">
+                            <div class="student-work-video m-video-item">
+                                <div class="m-video-poster" ng-click="showVideo($event,'/assets/data/v2.mp4')">
+                                    <img src="/assets/img/public/no-cover-135.jpg" alt="">
+                                    <span class="m-video-icon"></span>
+                                </div>
+                                <div class="m-video-show">
+                                    <div class="m-video-remove" ng-click="hideVideo($event)">收起</div>
+                                    <div class="m-video-play" id="a1"></div>
+                                </div>
+                            </div>
+                            <div class="student-work-video" id="a2">
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div> -->
+
+            </div>
+            <div class="no-data-box ng-cloak" ng-show="studentWorkList.length==0">暂时没有学生作品</div>
+            <div class="show-more-box ng-cloak" ng-click="showMoreWork()" ng-show="studentWorkList.length>0">
+                <span>点击查看更多</span>
+            </div>
+        </div>
+        <!-- 班级明星 -->
+        <div class="tab-pane" id="classStar" data-tab="star">
+            <div class="no-data-box ng-cloak" ng-show="classStarList.length==0">暂时没有班级明星</div>
+            <div class="class-star-list">
+                <div class="class-star-item" ng-repeat="item in classStarList">
+                    <div class="class-star-avatar">
+                        <img ng-src="{{ item.student._avatar }}" alt="">
+                        <p class="class-star-name" ng-bind="item.student.name"></p>
+                    </div>
+                    <div class="class-star-info">
+                        <p>入选理由：</p>
+                        <p class="class-star-content" ng-bind="item.reason"></p>
+                        <p class="class-star-tips">发布人：<span ng-bind="item.publish.realname"></span> {{ item.createtime*1000 | date:'MM-dd' }}</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+</div>

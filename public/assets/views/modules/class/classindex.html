@@ -1,0 +1,512 @@
+<div class="view-module-classindex" ng-controller="m.classindex.public.controller as control">
+	<div ng-if="!control.params.action" class="class-show-wrapper">
+		<div class="header">
+			<div class="banner">
+				<div class="widget-wrap">
+					<div class="widget">
+						<p ng-if="!control.hasAuth">{{control.cls}}</p>
+							<select ng-if="control.hasAuth" ng-model="control.changeVal" ng-change="control.classChange()">
+								<option ng-if="none" ></option>
+								<option ng-repeat="class in control.classes" ng-selected="{{control.changeVal==class.id}}" value="{{class.id}}" ng-bind="class.name"></option>
+							</select>
+					</div>
+				</div>
+				<img ng-src="/assets/img/student/header-show-bg02.jpg" width="100%">
+			</div>
+		</div>
+		<ul class="nav clearfix">
+			<li class="nav-item" >
+				<a href="/#/m/classindex/info/{{control.changeVal}}">
+					<i class="wrap-icon info">
+	                    <span class="nav-icon iconfont icon-edit"></span>
+	                </i>
+					<span class="nav-txt">班级简介</span>
+				</a>
+			</li>
+			<li class="nav-item" >
+				<a href="/#/m/classindex/album/{{control.changeVal}}">
+					<i class="wrap-icon album"><span class="nav-icon iconfont icon-camera"></span></i>
+					<span class="nav-txt">班级相册</span>
+				</a>
+			</li>
+			<li class="nav-item" >
+				<a href="/#/m/classindex/work/{{control.changeVal}}">
+					<i class="wrap-icon work"><span class="nav-icon iconfont icon-evaluate"></span></i>
+					<span class="nav-txt">学生作品</span>
+				</a>
+			</li>
+			<li class="nav-item" >
+				<a href="/#/m/classindex/star/{{control.changeVal}}">
+					<i class="wrap-icon star"><span class="nav-icon iconfont icon-favor"></span></i>
+					<span class="nav-txt">班级明星</span>
+				</a>
+			</li>
+			<li class="nav-item" >
+				<a href="/#/m/interact/{{control.changeVal}}">
+					<i class="wrap-icon interact"><span class="nav-icon iconfont icon-message"></span></i>
+					<span class="nav-txt">班级互动</span>
+				</a>
+			</li>
+		</ul>
+		<div class="class-action">
+			<dl>
+				<dt>
+					<h4>
+						班级动态
+					</h4>
+					<a href="/#/m/classaction/{{control.changeVal}}">更多&gt;</a>
+				</dt>
+				<dd ng-repeat="cn in control.classNews">
+					<div class="class-new-item">
+						<a href="/#/m/classaction/news/{{cn.id}}" >
+							<span class="img" ng-style="cn.style"></span>
+							<div class="item-txt">
+								<div>
+									<span ng-bind="cn.title"></span>
+									<b >{{cn.createtime*1000|date:'yyyy-MM-dd'}}</b>
+								</div>
+								<p ng-bind="cn.content"></p>
+							</div>
+						</a>
+					</div>
+				</dd>
+				<dd ng-show="control.classNews && !control.classNews.length">
+					<div class="class-noMore-item">
+						<p>- 暂无动态 -</p>
+					</div>
+				</dd>
+				<!--<dd ng-if="!cn.none" ng-repeat="cn in control.classNews"><a ng-class="{'classCenter':cn.none}" href="/#/m/classaction/news/{{cn.id}}" >{{cn.title}}</a><b ng-if="!cn.none">{{cn.createtime*1000|date:'yyyy-MM-dd'}}</b></dd>
+				<dd ng-if="cn.none" ng-repeat="cn in control.classNews"><a ng-class="{'classCenter':cn.none}" href="javascript:;" >{{cn.title}}</a></dd>-->
+			</dl>
+		</div>
+	</div>
+
+	<!-- class info -->
+	<div ng-if="'info'==control.params.action" class="info">
+		<img ng-src='{{control.profileCover}}' width="100%" height="180">
+		<h4>班级介绍</h4>
+		<p ng-class="{'classCenter':control.profile.none}" >{{control.profile.none ? control.profile.content:control.profile}}</p>
+		<ul>
+			<li ng-repeat="tl in control.teacherList">
+				<img ng-src="{{tl._avatar}}">
+				<dl>
+					<dt>{{tl._type}}</dt>
+					<dd>{{tl.name}}</dd>
+				</dl>
+			</li>
+		</ul>
+	</div>
+
+
+	<!-- class album -->
+	<div ng-if="'album'==control.params.action" class="album tab-pane">
+		<div class="class-album-list" ng-class="{'greyBgcol':control.classAlbumList.length}">
+			<a class="class-album-item" ng-repeat="album in control.classAlbumList" ng-href="{{album._skip}}" title="{{album.name}}">
+				<div class="class-album-cover" >
+					<span class="class-album-photocount" ng-bind="album.photocount"></span>
+					<img ng-src="{{ album._cover }}" />
+				</div>
+				<div class="class-album-info">
+					<span ng-bind="album._name"></span>
+				</div>
+				<div class="bigTap">
+					<i ng-show="control.deleteAlbumAuth" ng-click="control.deleteAlbumAuth && control.selectDeleteObject(album)" class="album-selector iconfont" ng-class="{true:'icon-roundcheck',false:'icon-round'}[!!album.checked]"></i>
+				</div>
+			</a>
+		</div>
+		<div class="no-data-box ng-cloak" ng-show="control.classAlbumList.length==0">
+			<img src="/assets/img/public/none.gif" alt="">
+			<p>暂时没有内容</p>
+		</div>
+		<div ng-show="control.hasAuth && !control.bottomBar" class="new-publish">
+			<a data-toggle="modal" data-target="#addAlbum" href="javascript:;" class="btn btn-lg btn-block" >
+				<i class="iconfont icon-add"></i>
+				新建相册
+				<i ng-if="control.classAlbumList.length" ng-click="control.deleteAlbum($event)" class="pull-right iconfont icon-delete"></i>
+			</a>
+		</div>
+		<div ng-show="control.hasAuth && control.bottomBar" class="del-album">
+			<a ng-click="control.cancelDelete()" href="javascript:;" class="btn btn-sm btn-block" >
+				取消
+			</a>
+			<a ng-disabled="!control.viewDeleteBtn.length" ng-click="control.executeDelete()" href="javascript:;" class="btn btn-sm btn-block" >
+				删除
+			</a>
+		</div>
+		<!-- status model -->
+        <div class="modal fade user-album-modal" id="addAlbum" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+						<p>
+							相册名称：
+						</p>
+						<div class="wrap-album-name">
+							<input type='text' ng-model="control.newAlbumName" />
+						</div>
+                    </div>
+					<div class="modal-footer">
+						<div class="handler-btn">
+							<a href="javascript:;" ng-click="!control.tocreated && control.createAlbum()">确定</a>
+			                <a href="javascript:;" data-dismiss="modal">取消</a>
+						</div>
+		            </div>
+                </div>
+            </div>
+        </div>
+	</div>
+
+	<!-- class albumdetail -->
+	<div ng-if="'albumdetail'==control.params.action" class="albumdetail tab-pane" >
+	    <div class="class-photo-list" data-role="photoList">
+	        <div class="class-photo-item" ng-repeat="(index,photo) in control.photoList" ng-click="!control.bottomImgBar && control.showImg(index)">
+	            <img ng-src="{{ photo.thumbnail }}" alt="" data-original="{{ photo.url }}" img-error>
+				<i  ng-show="control.deleteImgAuth" ng-click="control.deleteImgAuth && control.selectDeleteImgObject(photo)" class="photo-selector iconfont" ng-class="{true:'icon-roundcheck',false:'icon-round'}[!!photo.checked]"></i>
+	        </div>
+	    </div>
+		<div class="no-data-box ng-cloak" ng-show="control.photoList.length==0">
+			<img src="/assets/img/public/none.gif" alt="">
+			<p>赶紧对这个相册上传照片吧！</p>
+		</div>
+		<div ng-show="control.hasAuth && !control.bottomImgBar" class="new-publish">
+			<a data-web-uploader="control.detailUploadPhoto" href="javascript:;" class="btn btn-lg btn-block" >
+				<i class="iconfont icon-add"></i>
+				上传照片
+			</a>
+			<i ng-click="control.toggleMenu()" class="pull-right iconfont icon-moreandroid"></i>
+			<ul class="menu-operate hide">
+				<li ng-if="control.photoList.length" ><a ng-click="control.startDelete()" href="javascript:;">删除照片</a></li>
+				<li><a data-toggle="modal" data-target="#editAlbum" href="javascript:;">编辑相册</a></li>
+			</ul>
+		</div>
+		<div ng-show="control.hasAuth && control.bottomImgBar" class="del-album">
+			<div class="handler-btn">
+				<a ng-click="control.cancelDeleteImg()" href="javascript:;" class="btn btn-sm btn-block" >
+					取消
+				</a>
+				<a  ng-disabled="!control.viewDeleteBtnDetial.length" ng-click="control.executeImgDelete()" href="javascript:;" class="btn btn-sm btn-block" >
+					删除
+				</a>
+			</div>
+		</div>
+		<!-- status model -->
+        <div class="modal fade user-album-modal" id="editAlbum" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+						<p>
+							相册名称：
+						</p>
+						<div class="wrap-album-name">
+							<input type='text' ng-model="control.albumdetailName" />
+						</div>
+                    </div>
+					<div class="modal-footer">
+						<div class="handler-btn">
+						<a href="javascript:;"  ng-click="!control.tomodified && control.modifiedAlbumDetailName()">确定</a>
+		                <a href="javascript:;" data-dismiss="modal">取消</a>
+					</div>
+		            </div>
+                </div>
+            </div>
+        </div>
+		<!-- modal -浏览相片 -->
+		<div id="showPicture" class="modal fade">
+			<div class="modal-del" ng-if="control.delStatus">
+				<div class="txt"><b>确定删除该相片么？</b></div>
+				<div class="modal-del-btn">
+					<button ng-click="control.deleteActiveImg(true)" class="btn btn-danger" type="button">确定</button>
+					<button class="btn btn-default" type="button" ng-click="control.delStatus = false">取消</button>
+				</div>
+			</div>
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="swiper-title">
+						<i class="iconfont icon-close"  data-dismiss="modal"></i>
+						<span ng-bind="control.photoList.index + 1"></span>/<span ng-bind="control.photoList.length"></span>
+					</div>
+					<div class="swiper-container">
+						<div class="swiper-wrapper" >
+							<div class="swiper-slide" ng-repeat="item in control.photoList">
+								<div class="swiper-img" ng-style="item.style" data-background="{{item.url + '!medium.640'}}" class="swiper-lazy" data-id="{{item.id}}"></div>
+								<!--<img ng-src="{{item.url}}!medium.640" width="100%" height="auto" data-src="{{item.url + '!medium.640'}}" class="swiper-lazy"/>-->
+							</div>
+						</div>
+						<!-- 如果需要分页器 -->
+						<!--<div class="swiper-pagination"></div>-->
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer" ng-click="control.deleteActiveImg(false)">
+				<span class="button" href="javascript:;" >
+					<i class="iconfont icon-delete"></i>
+				</span>
+			</div>
+		</div>
+	</div>
+
+	<!-- student work -->
+	<div ng-if="'work'==control.params.action" class="work tab-pane" >
+		<div class="student-work">
+			<div class="student-work-list">
+				<dl>
+					<dd ng-repeat="item in control.studentWorkList">
+						<div class="class-new-item">
+							<a href="/#/m/classindex/workdetail/{{item.id}}" >
+								<span class="img" ng-style="item.style"></span>
+								<div class="item-txt">
+									<div>
+										<span ng-bind="item.title"></span>
+										<b >{{item._time|date:'yyyy-MM-dd'}}</b>
+									</div>
+									<p ng-bind="item.content"></p>
+								</div>
+							</a>
+						</div>
+					</dd>
+
+				</dl>
+				<!--<div class="student-work-item" ng-repeat="studentwork in control.studentWorkList">
+                    <div class="student-work-avatar">
+                        <img ng-src="{{ studentwork.auther._avatar }}" />
+                    </div>
+                    <div class="student-work-info">
+                        <a ng-href="/#/m/classindex/workdetail/{{studentwork.id}}">
+                            <p class="student-work-name" ng-bind="studentwork.author"></p>
+                            <p class="student-work-tips">{{ studentwork._time |date:'yyyy-MM-dd HH:mm'  }}</p>
+                            <p class="student-work-content">{{ studentwork.title }}</p>
+                        </a>
+                        <div ng-show="studentwork._photos.length" class="student-work-photos m-photo-list" data-role="photoList">
+                            <span class="m-photo-item" ng-repeat="photo in studentwork._photos" data-role="photoItem">
+                                <img ng-src="{{ photo.url + '!square.150' }}" alt="" data-original="{{ photo.url }}" img-error />
+                            </span>
+                        </div>
+                        <div ng-show="studentwork._videos.length || studentwork._audios.length" class="m-media-list" >
+                            <div class="m-media-item m-media-player" ng-repeat="video in studentwork._videos" data-role="media" data-source="{{video.url}}" data-type="video">
+                                <div class="m-media-poster" data-role="poster">
+                                    <img src="/assets/img/public/no-cover-135.jpg" alt="">
+                                    <span class="m-media-icon"></span>
+                                </div>
+                                <div class="m-media-show" data-role="show">
+                                    <div class="m-media-remove" data-role="remove">收起</div>
+                                    <div class="m-media-play" data-role="play"></div>
+                                </div>
+                            </div>
+                            <div class="m-media-item m-media-player" ng-repeat="audio in studentwork._audios" data-role="media" data-source="{{audio.url}}" data-type="audio">
+                                <div class="m-media-poster" data-role="poster">
+                                    <img src="/assets/img/public/no-cover-135.jpg" alt="">
+                                    <span class="m-media-icon"></span>
+                                </div>
+                                <div class="m-media-show" data-role="show">
+                                    <div class="m-media-remove" data-role="remove">收起</div>
+                                    <div class="m-media-play" data-role="play"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="student-work-others">
+                            <p><a ng-href="{{ other.url }}" ng-repeat="other in studentwork._others">{{ other.name }}</a></p>
+                        </div>
+                    </div>
+
+                </div>-->
+			</div>
+		</div>
+		<div class="no-data-box ng-cloak" ng-show="control.studentWorkList.length==0">
+			<img src="/assets/img/public/none.gif" alt="">
+			<p>暂时没有内容</p>
+		</div>
+		<div ng-show="control.hasAuth" class="new-publish">
+			<a href="/#/m/classindex/publishwork/{{control.classid || 0}}" class="btn btn-lg btn-block" >
+				<i class="iconfont icon-add"></i>
+				发布作品
+			</a>
+		</div>
+	</div>
+
+	<!-- publish work-->
+    <div class="publishwork publish" ng-if="'publishwork'==control.params.action">        
+        <div class="form-group" style="margin-bottom:10px;">
+            <div class="input-group">
+                <input type="text" class="form-control pl15" readonly ng-model="control.studentName" placeholder="请选择学生" />
+                <a href="/#/m/classindex/selectstudent/{{control.classid || 0}}" class="input-group-addon iconfont icon-right"></a>
+            </div>
+        </div>
+		<div class="publish-header">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="请输入标题" ng-model="control.workTitle" />
+            </div>
+
+            <div class="form-group">
+                <textarea class="form-control" rows="5" placeholder="请输入内容" ng-model="control.workContent"
+                          maxlength="250" resize="none"></textarea>
+            </div>
+
+            <div class="form-group form-photo-list clearfix">
+                <div class="form-photo-item" ng-repeat="pid in control.photo.list" ng-click="control.previewPicture(control.photo.queued[pid])">
+                    <img ng-show="control.photo.queued[pid].src" ng-src="{{control.photo.queued[pid].src}}" />
+                    <span ng-show="control.photo.queued[pid].ready" class="upload-ready"><b>等待</b></span>
+                    <span ng-show="control.photo.queued[pid].progress" ng-bind="control.photo.queued[pid].progress"></span>
+                    <span ng-show="control.photo.queued[pid].error" class="upload-error"><b>失败</b></span>
+                </div>
+                <div class="form-webuploader iconfont icon-add" data-web-uploader="control.photo" ng-hide="control.photo.list.length>=9"></div>
+            </div>
+        	<!-- <div class="form-group text-muted">最多添加9张图片</div> -->
+			<div class="form-group check" ng-if="control.isBusiness">
+				<i ng-click="control.wxSend=!control.wxSend" ng-class="{true:'on',false:''}[control.wxSend]" class="pull-right"><span></span></i>微信推送
+			</div>				 
+		</div>
+		<button type="button" class="btn btn-lg btn-block" ng-disabled="control.photo.uploading" ng-click="control.publishWork()">发布</button>       
+
+        <!-- status model -->
+        <div class="modal fade user-album-modal" id="previewPictureModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body" data-dismiss="modal">
+                        <img src="/assets/img/public/loader.gif" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:;" class="iconfont icon-delete" ng-click="control.removePicture()" data-dismiss="modal"></a>
+            </div>
+        </div>
+    </div>
+
+	<!--selector for student-->
+	<div class="select-student" ng-if="'selectstudent'==control.params.action">
+        <ul class="list-group" id="accordion">
+            <li ng-repeat="item in control.selectStudentList" class="list-group-item" ng-click="control.toggleSelectStudent(item.id,item.name)">
+                <div class="clearfix">
+                    <a href="javascript:;" id="toggleGroups" class="text-center"  ng-bind="item.name"></a>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+	<!-- student workdetail -->
+	<div ng-if="'workdetail'==control.params.action && control.studentwork" class="workdetail">
+		<div class="detail-title">
+            <h4 ng-bind="control.studentwork.title"></h4>
+			<p class="detail-title-publish">发布人：<span ng-bind="control.studentwork.author"></span></p>
+			<span ng-bind="control.studentwork.createtime*1000|date:'yyyy-MM-dd HH:mm'"></span>
+        </div>
+		<div class="detail-cont">
+			<p class="student-work-content" ng-bind-html="content" youku-ad-remove="content"></p>
+			<p ng-repeat="photo in control.studentwork._photos" data-role="photoItem">
+                <img class="img-responsive" ng-src="{{ photo.url + '!medium.640' }}"  alt="" data-original="{{ photo.url }}">
+            </p>
+		</div>
+		<div class="panel-body">
+			<div class="homework-attachment" ng-if="control.studentwork.hasAttachment">
+				<div class="homework-attachment-list" ng-repeat="item in control.studentwork.config | filter:{type:1}" >
+					<div ng-if="item.fileType=='mp4'" ng-show="!item.mp4" class="clsd-media-video" >
+						<a href="javascript:void(0);"  class="video-player" ng-click="showMedia(item)"></a>
+					</div>
+					<div ng-show="item.mp4" ng-if="item.fileType=='mp4'" class="videojs">
+						<video id="{{control.str}}" class="video-js vjs-default-skin" controls preload="none" width="100%" height="264"
+							   poster="" data-setup="{}">
+							<source id="source{{item.name}}" type="video/mp4" />
+						</video>
+					</div>
+				</div>
+			</div>
+			<div class="homework-attachment" ng-if="control.studentwork.hasAttachment">
+				<div class="homework-attachment-headline">附件：</div>
+				<div class="homework-attachment-list" ng-repeat="item in control.studentwork.config | filter:{type:1}" >
+					<a href="{{item.url}}" class="homework-attachment-item"
+					   ng-if="item.fileType!='mp3'&&item.fileType!='mp4'" data-role="photoItem">
+						<div class="homework-attachment-thumb" style="background: url('/assets/img/class/fileBig.png') no-repeat center;">
+						</div>
+						<div class="homework-attachment-info">
+                        <span class="homework-attachment-name">
+                            {{ item.name }}
+                        </span>
+							<span class="homework-attachment-arrow"></span>
+						</div>
+					</a>
+					<a ng-click="playAudio(item)" class="homework-attachment-item" ng-if="item.fileType=='mp3'"
+					   data-role="photoItem">
+						<audio id="{{item.url}}" ></audio>
+						<div class="homework-attachment-thumb" ng-class="{'play':item.playing}">
+						</div>
+						<div class="homework-attachment-info">
+                        <span class="homework-attachment-name">
+                            {{ item.name }}
+                        </span>
+						</div>
+						<img class="small-icon" ng-src="/assets/img/class/MP3.png">
+					</a>
+				</div>
+			</div>
+		</div>
+    </div>
+
+
+
+	<div ng-if="'star'==control.params.action" class="star">
+		<!-- <div class="star-wrap" ng-repeat="star in control.starList" >
+			<div>
+				<img ng-if="star.student.user.avatar" ng-src={{star.student.user.avatar}} alt="" />
+				<img ng-if="!star.student.user.avatar" src="/assets/img/student/no-avatar.png" alt="" />
+				<p ng-bind="star.student.name"></p>
+			</div>
+			<div>
+				<p ng-bind="star.reason"></p>
+				<p>
+					发布人：{{star.publish.realname}}    {{star.createtime*1000 | date:'yyyy-MM-dd'}}
+				</p>
+			</div>
+		</div> -->
+		<div class="tab-pane" id="classStar" data-tab="star">
+			<div class="class-star-list" ng-class="{'greyBgcol':control.starList.length}">
+				<div class="class-star-item" ng-repeat="item in control.starList">
+					<div class="class-star-avatar">
+						<img ng-if="item.student.user.avatar" ng-src={{item.student.user.avatar}} alt="" />
+						<img ng-if="!item.student.user.avatar" src="/assets/img/student/no-avatar1.png" alt="" />
+						<p class="class-star-name" ng-bind="item.student.name"></p>
+					</div>
+					<div class="class-star-info">
+						<span class="pull-left">入选理由：</span>
+						<p class="class-star-content" ng-bind="item.reason"></p>
+						<p class="class-star-tips">
+							<span class="pull-right" >{{ item.createtime*1000 | date:'yyyy-MM-dd HH:mm' }}</span>
+							发布人：<span ng-bind="item.publish.realname"></span> </p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="no-data-box ng-cloak" ng-show="control.starList.length==0">
+			<img src="/assets/img/public/none.gif" alt="">
+			<p>暂时没有内容</p>
+		</div>
+		<div ng-show="control.hasAuth" class="new-publish">
+			<a href="/#/m/classindex/publishstar/{{control.classid || 0}}" class="btn btn-lg btn-block" >
+				<i class="iconfont icon-add"></i>
+				发布明星
+			</a>
+		</div>
+	</div>
+
+	<div class="publishwork publish" ng-if="'publishstar'==control.params.action">        
+            <div class="form-group" style="margin-bottom:10px;">
+                <div class="input-group">
+                    <input type="text" class="form-control pl15" readonly ng-model="control.studentName" placeholder="请选择学生" />
+                    <a href="/#/m/classindex/selectstudent/{{control.classid || 0}}" class="input-group-addon iconfont icon-right"></a>
+                </div>
+            </div>
+            <div class="publish-header">
+	            <div class="form-group">
+	                <textarea class="form-control" style="border:0;" rows="5" placeholder="请输入理由" ng-model="control.starContent"
+	                          maxlength="250" resize="none"></textarea>
+	            </div>
+				<div class="form-group check" ng-if="control.isBusiness">
+					<i ng-click="control.wxSend=!control.wxSend" ng-class="{true:'on',false:''}[control.wxSend]" class="pull-right"><span></span></i>微信推送
+				</div>				
+			</div>
+			<button type="button" class="btn btn-lg btn-block" ng-disabled="control.photo.uploading" ng-click="control.publishStar()">发布</button>
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,11 @@
+<!-- 班级风采-班级照片 -->
+<div class="class-photo-wrapper" >
+    <div class="class-photo-list" data-role="photoList">
+        <div class="class-photo-item" ng-repeat="photo in photoList" ng-style="{ width:photo._width,height:photo._width }" data-role="photoItem">
+            <img ng-src="{{ photo._thumb }}" alt="" data-original="{{ photo.url }}" img-error>
+        </div>
+
+    </div>
+    <div class="none-wrap none-behave" ng-show="photoList.length==0">暂无数据</div>
+    
+</div>

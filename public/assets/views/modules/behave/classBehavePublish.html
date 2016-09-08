@@ -1,0 +1,46 @@
+<div class="behave-publish-wrapper">
+    <div class="behave-publish-header">
+        <div class="behave-target-box clearfix" ng-click="showAddressBook()">
+            <div class="behave-target-list">
+                <span class="behave-target-placeholder" ng-if="!publishTarget">请选择学生</span>
+                <span class="behave-target-item" ng-if="publishTarget">{{publishTarget.name}}</span>
+            </div>
+            <div class="behave-target-action"  >
+                <i class="iconfont icon-right"></i>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!-- 通讯录 -->
+    <div class="address-wrapper student-address-wrapper" id="address">
+        <div class="iscroll-wrapper">
+            <div class="address-header student-address-header">
+
+            </div>
+            <div class="address-item" ng-click="addressSelected({id:0,name:'全班'})">全班</div>
+            <div class="address-group student-address-group" ng-repeat="group in addressGroup" ng-if="group.list">
+                <!-- <div class="address-group-header">
+                    {{group.name}}
+                </div> -->
+                <div class="address-list">
+                    <div class="address-item" ng-repeat="address in group.list" ng-click="addressSelected(address)">
+                        <!-- <span class="address-avatar">
+                            <img ng-src="{{ address._avatar }}">
+                        </span> -->
+                        <span class="address-info">
+                            {{ address.name }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </div>
+    <div ng-include src="'/assets/views/modules/behave/studentBehavePublish.html'"></div>
+</div>
+

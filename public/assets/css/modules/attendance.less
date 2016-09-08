@@ -1,0 +1,159 @@
+/*全校考勤记录*/
+.view-module-attendance {
+    background-color: #f4f4f4;
+    position: absolute;min-height: 100%;width: 100%;
+    ul,li { margin: 0; padding: 0;}
+    .one-wrapper{ padding-top: 40px;}
+    .totle-title{margin:15px 0 5px 0;}
+    .header{height: 70px;overflow:hidden; padding:14px 0; background-color:#d7d7d7; position:relative;
+        .input-class{
+            position: relative; z-index: 3; margin:0 60px; text-align: center; margin-top: -30px;
+            .modelClassid { width: 90%; height:32px; border:0; display: inline-block;}
+        }
+
+        .input-append{ display:block;margin-left:auto; width:60px; margin-top: 5px;
+            .date-input{ background: none; border:none; width: 0;  cursor: pointer;  z-index: 2; }
+        }
+    }
+    .input-append .add-on .glyphicon{
+        height: 24px;
+        width: 24px;
+        font-size: 24px;
+        top:7px;
+    }
+    .wrapper{padding:4rem 0; margin: 0 2.5rem;}
+    .Two-time-periods{
+        position: absolute;
+        top: 50%;
+        margin: -161px 2rem;
+        width:90%;
+
+    }
+    .box{border:1px solid #d0d0d0; border-bottom: none; border-radius: 3px; background:#fff; margin: 0 auto;
+        li{ position:relative; border-bottom:1px solid #d0d0d0; padding:3rem 0;
+            h3{
+                width:56px; height:56px; border:1px solid #d0d0d0; border-radius: 50%; position:absolute; top:-48px; left:50%; margin-left:-28px; background:#fff; font-size: 14px;
+                span{display:block; width:30px; margin:12px auto 0; line-height: 16px;
+                    &.text-more{ width: 40px; font-size: 13px;}
+                }
+            }
+            table{width:98%;
+                tr td{padding: 5px 0 5px 6%;
+                    i{display:inline-block; width:50px;}
+                    span{display: inline-block; background:#48c8d5; color:#fff; padding:0 8px; min-width: 60px;}
+                }
+            }
+        }
+    }
+    .text-red { color: #c00;}
+    .tabs{
+        width: 100%;overflow: hidden;
+        .tabs-flex{
+            display: table;
+            margin:0 auto;
+        }
+        a{
+            display: table-cell; min-width:120px;
+            color:#333;text-align:center;line-height:35px;font-size:14px;text-decoration:none;
+            &.active{color:#40acb8; border-bottom:2px solid #40acb8;}
+        }
+    }
+    .state{display:inline-block; min-width:50px; text-align:right; float: left;}
+    .swiper-container {width:100%; margin:0 auto;position:relative;overflow:hidden; z-index:1;}
+    .content-slide{
+        ul li{float:left; width:25%; text-align:center; padding:8px 0; background:#394345; color:#fff; min-height: 36px;}
+        table{
+            tr{
+                td{text-align:center;
+                    line-height: 2em;
+                    a{display:block; color:#333;}
+                }
+                &:nth-child(even) { background-color: #f4f4f4;}
+            }
+        }
+    }
+    /*学生考勤记录*/
+    .allTranslation(@time:0.5s){
+        -webkit-transition: all  @time ease;
+        -moz-transition: all  @time ease ;
+        -o-transition: all  @time ease ;
+        transition:all  @time ease ;
+    }
+    .studentList{
+        background-color: #fff;
+        min-height: 100%;
+        width: 100%;
+        position: absolute;
+    }
+    .page-content{
+        padding-top: 3rem;
+        &.hasLength{
+            position: absolute;
+            min-height: 100%;
+            width: 100%;
+            background: url(/assets/img/attendance/line.png) #fff 63px 30px repeat-y;
+            background-clip: content-box;
+        }
+    }
+    .record_list{
+        width:100%;
+        margin-left: 0px;
+        padding-bottom: 10px;
+        position:relative;
+        &:first-child::before{
+            display: block;
+            content: ".";
+            position: absolute;
+            top:0;
+            left:0;
+            width:80px;
+            height: 35%;
+            color: #fff;
+            background-color: #fff;
+        }
+        dt{
+            width:80px;
+            font-size: 0.9em;
+            color: #333;
+            line-height: .9em;
+            display: block;
+            position:absolute;
+            top:35%;
+            background-color: #fff;
+            span{ display: inline-block; width: 56px; padding-right:10px; text-align: right; font-weight: normal;}
+            i { color: #d6d6d6; font-size: 1.2em;}
+            .allTranslation();
+        }
+        dd{
+            padding: 15px;
+            margin:0 0 0 80px;
+            background:#f3f3f3;
+            border-radius: 30px 0px 0px 30px;
+            .allTranslation();
+            .detail-list{
+                margin-bottom: 5px;
+                p{ &:last-child{margin-bottom: 0;}}
+                i { color:#b6b6b6;}
+                .time{display:inline-block; min-width: 45px; height:18px; line-height: 18px; padding:0 0 0 5px;}
+                .pic{padding:8px 0 8px 0;}
+                img{
+                    max-width: 180px;margin-left:23px;
+                }
+            }
+
+        }
+
+        &.current {
+            dt{
+                i {color: #4ac8d6;}
+            }
+            dd{
+                background:#4ac8d6;
+                i{ color: #fff;}
+            }
+        }
+    }
+    .loadingMore{
+        text-align: center;padding: 1rem 0;
+    }
+}

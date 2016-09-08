@@ -1,0 +1,43 @@
+<!-- 班级请假详情 -->
+<div  ng-show="show" class="leave-detail-wrapper class-leave-detail-wrapper" >
+    <div class="leave-type leave-class-type" ng-class="data._typeClass" ng-bind="data.type.name"></div>
+    <div class="leave-info">
+        <p>
+            <span class="leave-label">请假时间 :</span>
+            <span class="leave-content" ng-bind="data._starttime"></span>
+        </p>
+        <p>
+            <span class="leave-label">至 :</span>
+            <span class="leave-content" ng-bind="data._endtime"></span>
+        </p>
+        <p class="leave-reason-box">
+            <span class="leave-label">请假原因 :</span>
+            <span class="leave-content" ng-bind="data.notes"></span>
+        </p>
+        <p class="leave-status-box">
+            <span class="leave-label">假条状态 :</span>
+            <span class="leave-content" ng-class="data._checkstatusClass" ng-bind="data._checkstatus"></span>
+        </p>
+    </div>
+
+    <div ng-switch on="data.checkstatus" ng-show="isClassMaster">
+        <!-- 已批假 -->
+        <div class="leave-action leave-one-action" ng-switch-when="0">
+            <button class="leave-action-btn leave-bg-B" ng-click="updateCheckStatus(2)">拒绝</button>
+        </div>
+        <!-- 未审批 -->
+        <div class="leave-action leave-two-action" ng-switch-when="1">
+            <button class="leave-action-btn leave-bg-D" ng-click="updateCheckStatus(0)">批假</button>
+            <button class="leave-action-btn leave-bg-B" ng-click="updateCheckStatus(2)">拒绝</button>
+        </div>
+        <!-- 已拒绝 -->
+        <div class="leave-action leave-one-action" ng-switch-when="2">
+            <!-- <button class="leave-action-btn leave-bg-D" ng-click="updateCheckStatus(0)">批假</button> -->
+        </div>
+        <div class="leave-action" ng-switch-default>
+
+        </div>
+    </div>
+
+
+</div>

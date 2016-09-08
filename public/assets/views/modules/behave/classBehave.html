@@ -1,0 +1,99 @@
+
+<div class="behave-wrapper class-behave-wrapper" data-role="wrap">
+
+
+    <div class="news-list">
+        <div class="news-item ng-cloak"  ng-repeat=" data in dataList ">
+            <!-- 学生动态 -->
+            <div ng-if="data._isTweet">
+                <div class="news-header">
+                    <div class="news-avatar">
+                        <img ng-src="{{ data.content._student.avatar }}" alt="">
+                    </div>
+                    <div class="news-info">
+                        <p>
+                            <span ng-bind="data.content._student.name" class="news-target-name"></span>
+                        </p>
+                        <p class="news-tips"> 来自<span>{{data.content._author.name}}</span> <span>{{ data._time }}</span></p>
+                    </div>
+                </div>
+                <div class="news-body">
+                    <div class="news-content">
+                        <div ng-bind-html="data.content.text" class="news-content-text"></div>
+                        <div class="news-images-list" data-role="photoList" ng-if="data.content.images.length" ng-class="{1:'news-images-single'}[data.content.images.length]">
+                            <span ng-repeat=" img in data.content.images " class="m-photo-item" data-role="photoItem">
+                                <img ng-src="{{ img._thumbnail }}" alt="" data-original="{{ img.url }}" img-error />
+                            </span>
+
+                        </div>
+                        <div class="news-videos-list" ng-if="data.content.videos.length">
+                            <div class="m-media-item m-media-player" ng-repeat="video in data.content.videos" data-role="parent" data-source="{{video.url}}" data-type="video">
+                                <div class="m-media-poster" data-role="poster">
+                                    <img src="/assets/img/public/no-cover-135.jpg" alt="">
+                                    <span class="m-media-icon"></span>
+                                </div>
+                                <div class="m-media-show" data-role="show">
+                                    <div class="m-media-remove" data-role="remove">收起</div>
+                                    <div class="m-media-play" data-role="play"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="javascript:void(0);" class="news-del-btn ng-cloak" ng-show="data.content._isOwner" ng-click="toDeleteView(data)" >
+                    <i class="iconfont icon-delete"></i>
+                </a>
+            </div>
+            <!-- 老师表彰 -->
+            <div ng-if="!data._isTweet">
+                <div class="news-header">
+                    <div class="news-avatar">
+                        <img ng-src="{{ data._student.avatar }}" alt="">
+                    </div>
+                    <div class="news-info">
+                        <p>
+                            <span ng-bind="data._student.name" class="news-target-name"></span>
+                        </p>
+                        <p class="news-tips"> 来自<span>{{data.operator.realname}}</span> <span>{{ data._time }}</span></p>
+
+                    </div>
+                </div>
+                <div class="news-body">
+                    <div class="news-content news-review-content">
+                        <p ng-bind="data.groupsurface.name"></p>
+                        <span ng-if="data.groupsurface.attachurl" >
+                            <img ng-src="{{ data.groupsurface.attachurl+'!square.75' }}" alt="" class="news-review-img" img-error />
+                        </span>
+
+                    </div>
+                    <div class="news-note" ng-if="data.notes">
+                        备注：<span ng-bind="data.notes"></span>
+                    </div>
+                </div>
+                <a href="javascript:void(0);" class="news-del-btn ng-cloak" ng-show="data._isOwner" ng-click="toDeleteReview(data)" >
+                    <i class="iconfont icon-delete"></i>
+                </a>
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <div class="no-data-box" ng-show="dataList.length==0">
+        <img alt="" src="/assets/img/public/none-inferior.gif">
+        <p>暂时没有内容</p>
+    </div>
+    <div class="show-more-box" ng-show="dataList.length>0">
+        <span ng-click="showMore()" ng-if="flag" class="show-more-link ng-cloak">点击查看更多</span>
+        <span ng-if="false == flag" class="no-more-txt ng-cloak">没有更多了</span>
+    </div>
+
+    <div class="behave-navbar clearfix">
+        <a href="#/{{classid}}/class/behave/publish/photo" class="behave-action-link">
+            <span class="iconfont icon-add"></span>
+            <span class="news-actions-text">上传照片</span>
+        </a>
+
+    </div>
+</div>

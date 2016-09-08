@@ -1,0 +1,118 @@
+<!-- 班级互动  遗弃模块，待删除 -->
+<!-- <a class="m-gotop-box" href="javascript:void(0)">
+    <i class="fa fa-chevron-up"></i>
+</a> -->
+<div class="class-news-wrapper" >
+    <div class="header">
+        <div class="banner" >
+           <img ng-src="/assets/img/student/header-bg.jpg" width="100%">
+        </div>
+    </div>
+
+
+    <div class="news-list ng-cloak" ng-if="dataList.length"  ng-repeat="item in dataList">
+
+        <div class="news-item">
+            <div class="news-header clearfix">
+                <div class="news-avatar">
+                    <img ng-src="{{item.author.avatar}}" alt="">
+                </div>
+                <div class="news-info">
+                    <p>{{item.author.realname}}</p>
+                    <p class="news-tips">
+                        <span>{{item._time}}</span>
+                    </p>
+                </div>
+            </div>
+            <div class="news-body">
+
+                <div class="news-remove-btn" ng-show="item.author.uid==uid" ng-click="toDeleteView(item.session,$index)"><i class="iconfont icon-delete"></i></div>
+                <div class="news-content">
+                    <div class="news-content-text ng-cloak" >
+                        <p ng-bind-html="item.content" class="news-text">
+                        </p>
+                    </div>
+
+                    <div class="news-images-list clearfix" data-role="photoList" ng-if="item.photos.length" ng-class="{'news-images-single':item.photos.length==1}">
+                        <span ng-repeat=" img in item.photos " class="m-photo-item" style="float:left;" data-role="photoItem">
+                            <img ng-src="{{ img._thumbnail }}" data-original="{{ img.url }}" img-error />
+                        </span>
+                    </div>
+                </div>
+                <div class="news-actions clearfix">
+                    <span class="news-left" ng-click="toggleNewsContent($index)" ng-show="isLong[$index]" ng-bind="{true:'收起',false:'全文'}[!!isShowDetail[$index]]"></span>
+                    <span class="news-right" ng-click="toReplyView(item)">回复</span>
+                    <span class="news-right" ng-click="like($index,item)" ><i class="iconfont icon-likefill"></i>{{item.praise}}</span>
+                </div>
+                <!--回复开始-->
+                <div class="comment-list"  ng-repeat="chatitem in comments[item.session] |limitTo:num[$index]||3" >
+                    <div class="comment-item">
+                        <div class="comment-header fl" >
+                            <span class="comment-avatar">
+                                <img ng-src="{{chatitem.author.avatar}}" alt="" class="comment-avatar-img">
+                            </span>
+                            <span class="comment-username" >{{chatitem.author.realname}}</span>
+                                <!--<span class="comment-color-gray" ng-if="chatitem.parent.uuid!=item.uuid"> 回复 <span class="comment-reply-target">{{chatitem.parentRealname}}</span></span>--> ：
+                        </div>
+                        <div class="comment-body fl">
+                            <div class="comment-content" ng-bind-html="chatitem.content"></div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <div class="comment-more" ng-if="comments[item.session].length">
+                    <span class="comment-more-link" ng-if="comments[item.session].length>3"  ng-click="toMoreCommentView($index)" ng-bind="{true:'收起',false:'更多'}[!!isShowAll[$index]]"></span>
+                    <span class="comment-more-count">共{{comments[item.session].length}}条</span>
+                </div>
+                <!--回复结束-->
+
+            </div>
+
+        </div>
+    </div>
+    <div class="news-action-bar">
+        <!-- <div class="news-left" ng-hide="true"><i class="fa fa-chevron-left"></i></div>
+        <div class="news-right" ng-hide="true"><i class="fa fa-ellipsis-h"></i></div> -->
+        <!-- <div class="news-center"><a ng-href="#/{{classid}}/news/publish" class="news-publish-link"><i class="fa fa-edit"></i>发话题</a></div> -->
+        <div class="list-bottom">
+            <a href="#/{{classid}}/news/publish" class="btn btn-lg btn-block" >
+                <i class="iconfont icon-add"></i>
+                发话题
+            </a>
+        </div>
+    </div>
+
+
+    <!-- 回复 -->
+    <div class="modal fade" id="replyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+
+                    <div class="news-reply-wrapper">
+                        <div class="reply-textarea-box">
+                            <textarea name="replyContent" id="replyContent" placeholder="{{ replyData.to }}" ng-model="replyData.content"></textarea>
+                        </div>
+                        <div class="reply-action-box">
+                            <span class="expreSelect"><i class="iconfont icon-emoji"></i></span>
+                            <span class="publish-text-count" id="pText">140</span>
+                            <span class="publish-cancel-btn" data-dismiss="modal">取消</span>
+                            <span class="publish-send-btn" ng-click="reply()" data-dismiss="modal">发送</span>
+                        </div>
+                        <!-- 表情 -->
+                        <div class="expreList"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="no-data-box" ng-show="dataList.length==0">暂时没有内容，请点击发话题</div>
+    <div class="show-more-box" ng-show="dataList.length>0">
+        <span ng-click="showMore()" ng-if="flag" class="show-more-link ng-cloak">点击查看更多</span>
+        <span ng-if="false == flag" class="no-more-txt ng-cloak">没有更多了</span>
+    </div>
+</div>

@@ -1,0 +1,122 @@
+<div class="view-module-interactive" ng-controller="m.interactive.controller as control">
+
+    <div class="nav nav-tab">
+        <a ng-class="{active:control.action=='inbox'}" href="/#/m/interactive/inbox">回复我的</a>
+        <a ng-class="{active:control.action=='outbox'}" href="/#/m/interactive/outbox">我发出的</a>
+    </div>
+
+    <div class="tab-content">
+
+        <div class="tab-pane active">
+            <img src="/assets/img/student/empty-02.png" style="display:inline-block;width:80%;margin:10%;" ng-if="control.listData.length===0" />
+            <!-- 20：50 / 昨天 20：55 / 前天 21：00 / 6月23日 21：05 / 2014年6月22日 21：10 -->
+            <div class="feed-item" ng-repeat="item in control.listData">
+                <div class="head clearfix">
+                    <img class="avatar" ng-src="{{'/assets/img/public/avatar-80.png'}}" />
+                    <b>{{item.name}}</b>
+                    <em>{{item.time}}</em>
+                    <a href="javascript:void(0)" data-toggle="modal" data-target="#comment" ng-if="control.action=='inbox'">
+                        <i class="iconfont icon-message"></i>
+                        <i class="iconfont icon-more"></i>
+                        评论
+                    </a>
+                    <a href="javascript:void(0)" data-toggle="modal" data-target="#del" ng-if="control.action=='outbox'">
+                        <i class="iconfont icon-delete"></i>
+                        删除
+                    </a>
+                </div>
+                <div class="reply">
+                    <b>回复：</b>{{item.reply}}
+                    <div>
+                        <span><b></b></span>
+                        <a ng-href="/#/m/interactive/{{control.action}}/{{item.id}}">{{item.content}}</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feed-item" ng-if="control.id">
+                <div class="head">
+                    <img class="avatar" ng-src="{{'/assets/img/public/avatar-80.png'}}" />
+                    <b>王小明</b>
+                    <em>今天 15：30</em>
+                </div>
+                <div class="content">
+                    <p><b>虽然已进入了二十一世纪的第二个十年，但美国加拿大等国的部分ISP提供的宽带服务仍然有流量限额，如Cox Cable宽带每月流量封顶为250GB。Tyler Hayes从未用光过流量，然而现在他突然发现自己每天用的流量接近80Gb。</b></p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;他利用本地流量监测工具Little Snitc分析流量后发现，罪魁祸首是亚马逊Kindle Fire TV的一个屏保。屏保的一个bug导致它下载的图像没有被缓存。亚马逊表示将发布软件更新修复问题。</p>
+                    <div>
+                        <img src="http://static.cnbetacdn.com/newsimg/2014/0703/32_1404366971.png_600x600.png" width="200" />
+                        <img src="http://static.cnbetacdn.com/newsimg/2014/0703/43_1404366972.png_600x600.png" width="200" />
+                    </div>
+                </div>
+                <div class="comment">
+                    <div class="head clearfix">
+                        <img class="avatar" ng-src="{{'/assets/img/public/avatar-80.png'}}" />
+                        <b>王小明</b>
+                        <span>250G流量多少钱？一天用12小时，网速约为2MB/S，我的fios跑过流量3t的月流量</span>
+                    </div>
+                    <ul class="clearfix">
+                        <li><a href="javascript:void(0)" data-toggle="modal" data-target="#comment"><i class="iconfont icon-comment"></i> <i class="iconfont icon-more"></i> 评论</a></li>
+                        <li><a href="javascript:void(0)" data-toggle="modal" data-target="#del"><i class="iconfont icon-delete"></i> 删除</a></li>
+                    </ul>
+                </div>
+                <div class="comment">
+                    <div class="head clearfix">
+                        <img class="avatar" ng-src="{{'/assets/img/public/avatar-80.png'}}" />
+                        <b>王小明</b>
+                        <span>250G流量多少钱？一天用12小时，网速约为2MB/S，我的fios跑过流量3t的月流量</span>
+                    </div>
+                    <ul class="clearfix">
+                        <li><a href="javascript:void(0)" data-toggle="modal" data-target="#comment"><i class="iconfont icon-comment"></i> <i class="iconfont icon-more"></i> 评论</a></li>
+                        <li><a href="javascript:void(0)" data-toggle="modal" data-target="#del"><i class="iconfont icon-delete"></i> 删除</a></li>
+                    </ul>
+                </div>
+                <div class="comment">
+                    <div class="head clearfix">
+                        <img class="avatar" ng-src="{{'/assets/img/public/avatar-80.png'}}" />
+                        <b>王小明</b>
+                        <span>250G流量多少钱？一天用12小时，网速约为2MB/S，我的fios跑过流量3t的月流量</span>
+                    </div>
+                    <ul class="clearfix">
+                        <li><a href="javascript:void(0)" data-toggle="modal" data-target="#comment"><i class="iconfont icon-comment"></i> <i class="iconfont icon-more"></i> 评论</a></li>
+                        <li><a href="javascript:void(0)" data-toggle="modal" data-target="#del"><i class="iconfont icon-delete"></i> 删除</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="comment" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <textarea class="comment-content" placeholder="回两句吧..."></textarea>
+                    <div ng-show="control.emoji.show" class="emoji-panel clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:void(0)" ng-hide="control.emoji.show" ng-click="control.emoji.show=true"><i class="iconfont icon-emoji"></i></a>
+                    <a href="javascript:void(0)" ng-show="control.emoji.show" ng-click="control.emoji.show=false"><i class="iconfont icon-keyboard"></i></a>
+                    <span id="contentLength">0/150</span>
+                    <button type="button" class="btn btn-warning">发送</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="del" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    确定要删除吗？
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

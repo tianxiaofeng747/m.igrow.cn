@@ -1,0 +1,200 @@
+<div class="view-module-class" ng-controller="m.class.controller as control">
+
+    <div ng-if="control.status===1||control.status===6">
+        <div class="nav nav-tab">
+            <a ng-class="{active:control.action=='student'}" ng-click="control.tabCheck('student')" href="javascript:;">花名册</a>
+            <a ng-class="{active:control.action=='teacher'}" ng-click="control.tabCheck('teacher')" href="javascript:;">教师通讯录</a>
+        </div>
+
+        <div class="tab-content">
+            <!--student-->
+            <div class="tab-pane" ng-class="{active:control.action=='student'}">
+                <div class="skipletter">
+                    <ul>
+                        <li ng-click="control.gotoletter('petitspois'+letter.name)" ng-repeat="letter in control.studentData|filter:{head:true}" ng-bind="letter.name"></li>
+                    </ul>
+                </div>
+                <div class="empty" ng-if="control.studentData.length===0"></div>
+                <div class="list-group" ng-if="control.studentData.length">
+                    <a id="{{item.head && ('petitspois'+item.name)}}" href="javascript:;" class="list-group-item" ng-repeat="item in control.studentData|stylefilter" ng-href="{{ {true:'/main/#/'+item.id+'/student/profile'}[!item.head] }}" ng-class="{'item-header':item.head}" ng-switch on="item.head">
+                        <b ng-switch-when="true" ng-bind="item.name"></b>
+                        <img class="avatar" ng-switch-default ng-src="{{(item.user.avatar?item.user.avatar+'!64':'')||'/assets/img/public/avatar-80.png'}}" />
+                        <span ng-switch-default><b ng-bind="item.name"></b></span>
+                    </a>
+                </div>
+            </div>
+
+            <!--teacher-->
+            <div class="tab-pane" ng-class="{active:control.action=='teacher'}">
+                <div class="skipletter">
+                    <ul>
+                        <li ng-click="control.gotoletter(letter.name+letter.name)" ng-repeat="letter in control.teacherData|filter:{head:true}" ng-bind="letter.name"></li>
+                    </ul>
+                </div>
+                <div class="empty" ng-if="control.teacherData.length===0"></div>
+                <div class="list-group">
+                    <a href="javascript:;" id="{{item.head && item.name+item.name}}" class="list-group-item" ng-repeat="item in control.teacherData|stylefilter" ng-href="{{ {true:'/#/m/teacher/profile/'+item.id}[!item.head] }}" ng-class="{'item-header':item.head}" ng-switch on="item.head">
+                        <b ng-switch-when="true" ng-bind="item.name"></b>
+                        <img class="avatar" ng-switch-default ng-src="{{(item.user.avatar?item.user.avatar+'!64':'')||'/assets/img/public/avatar-80.png'}}" />
+                        <span ng-switch-default>
+                            <b ng-bind="item.name"></b>
+                            <span><b ng-bind="item.mobile"></b></span>
+                        </span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div ng-if="control.status===2">
+        <div class="skipletter">
+            <ul>
+                <li ng-click="control.gotoletter(letter.name)" ng-repeat="letter in control.teacherData|filter:{head:true}" ng-bind="letter.name"></li>
+            </ul>
+        </div>
+        <div class="tab-content">
+            <div class="tab-pane active">
+                <div class="list-group">
+                    <a href="javascript:;" id="{{item.head && item.name}}" class="list-group-item" ng-repeat="item in control.teacherData" ng-click="!item.head&&item.uid&&control.backToPM(item)" ng-class="{'item-header':item.head,'item-header-title':item.style}" ng-switch on="item.head">
+                        <!--bind and unbind title-->
+                        <em ng-switch-when="false" ng-bind-html="item.name"></em>
+                        <b ng-switch-when="true" ng-bind="item.name"></b>
+                        <img class="avatar" ng-switch-default ng-src="{{(item.user.avatar?item.user.avatar+'!64':'')||'/assets/img/public/avatar-80.png'}}" />
+                        <span ng-switch-default ng-class="{'unbound':item.uid===0}">
+                            <b ng-bind="item.name+{true:' （未绑定）'}[item.uid===0]"></b>
+                            <span><b ng-bind="item.mobile"></b></span>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div ng-if="control.status===3">
+        <div class="skipletter">
+            <ul>
+                <li ng-click="control.gotoletter(letter.name)" ng-repeat="letter in control.studentData|filter:{head:true}" ng-bind="letter.name"></li>
+            </ul>
+        </div>
+        <div class="tab-content single-select">
+            <div class="list-checked-all">
+                <i class="fa" ng-class="{true:'fa-check-circle',false:'fa-circle-thin'}[!!control.checkedItems.classes[control.classid].all]" ng-click="control.checkedItems.click()"></i>全选
+            </div>
+            <div class="tab-pane active">
+                <div class="list-group" ng-if="control.studentData.length">
+                    <a href="javascript:;" id="{{item.head && item.name}}" class="list-group-item" ng-repeat="item in control.studentData" ng-class="{'item-header':item.head,'item-header-title':item.style}" ng-click="!item.head&&item.uid&&control.checkedItems.click(item)" ng-switch on="item.head">
+                        <em ng-switch-when="false" ng-bind-html="item.name"></em>
+                        <b ng-switch-when="true" ng-bind="item.name"></b>
+                        <i ng-switch-default class="fa" ng-class="{true:'fa-check-circle',false:'fa-circle-thin'}[control.checkedItems.classes[control.classid].all||!!control.checkedItems.classes[control.classid].student[item.id]]"></i>
+                        <img class="avatar" ng-switch-default ng-src="{{(item.user.avatar?item.user.avatar+'!64':'')||'/assets/img/public/avatar-80.png'}}" />
+                        <span ng-switch-default ng-class="{'unbound':item.uid===0}"><b ng-bind="item.name+{true:' （未绑定）'}[item.uid===0]"></b></span>
+                    </a>
+                </div>
+            </div>
+            <div class="list-bottom">
+                <button type="button" class="btn" ng-click="control.backToPM()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="control.status===4">
+        <div class="nav nav-tab">
+            <a ng-class="{active:control.action=='student'}" ng-click="control.tabCheck('student')" href="javascript:;">花名册</a>
+            <a ng-class="{active:control.action=='teacher'}" ng-click="control.tabCheck('teacher')" href="javascript:;">教师通讯录</a>
+        </div>
+        <div class="tab-content">
+            <div class="tab-pane" ng-class="{active:control.action=='student'}">
+                <ul class="list-class" ng-if="control.classData.length">
+                    <li class="list-class-item" ng-repeat="item in control.classData">
+                        <a ng-href="/#/m/class/{{item.id}}">
+                            <span>{{item.name}}</span>
+                            <i class="iconfont icon-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!--letter teacher -->
+            <div class="tab-pane" ng-class="{active:control.action=='teacher'}">
+                <div class="empty" ng-if="control.teacherData.length===0"></div>
+                <div class="skipletter">
+                    <ul>
+                        <li ng-click="control.gotoletter(letter.name)" ng-repeat="letter in control.teacherData|filter:{head:true}" ng-bind="letter.name"></li>
+                    </ul>
+                </div>
+                <div class="list-group">
+                    <a href="javascript:;" id="{{item.head && item.name}}" class="list-group-item" ng-repeat="item in control.teacherData | stylefilter" ng-href="{{ {true:'/#/m/teacher/profile/'+item.id}[!item.head] }}" ng-class="{'item-header':item.head}" ng-switch on="item.head">
+                        <b ng-switch-when="true" ng-bind="item.name"></b>
+                        <img class="avatar" ng-switch-default ng-src="{{(item.user.avatar?item.user.avatar+'!64':'')||'/assets/img/public/avatar-80.png'}}" />
+                        <span ng-switch-default>
+                            <b ng-bind="item.name"></b>
+                            <span><b ng-bind="item.mobile"></b></span>
+                        </span>
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div ng-if="control.status===5">
+        <div class="skipletter">
+            <ul>
+                <li ng-click="control.gotoletter(letter.name)" ng-repeat="letter in control.teacherData|filter:{head:true}" ng-bind="letter.name"></li>
+            </ul>
+        </div>
+        <div class="tab-content single-select">
+            <div class="list-checked-all">
+                <i class="fa" ng-class="{true:'fa-check-circle',false:'fa-circle-thin'}[!!control.checkedItems.all]" ng-click="control.checkedItems.click()"></i>全选
+            </div>
+            <div class="tab-pane active">
+
+                <!--class list-->
+                <ul class="list-class" ng-if="control.classData.length">
+                    <li class="list-class-item" ng-repeat="item in control.classData">
+                        <i class="fa" ng-class="{true:'fa-check-circle',false:'fa-circle-thin'}[!!control.checkedItems.classes[item.id]]" ng-click="control.checkedItems.click(item)"></i>
+                        <a href="javascript:void(0)" ng-click="control.checkedClass(item)">
+                            <span>{{item.name}}</span>
+                            <em ng-if="control.checkedItems.classes[item.id].all">已选全班</em>
+                            <em ng-if="control.checkedItems.classes[item.id].length">已选 <i>{{control.checkedItems.classes[item.id].length}}</i> 人</em>
+                            <i class="iconfont icon-right"></i>
+                        </a>
+                    </li>
+                </ul>
+
+
+                <!--teacher list -->
+                <div class="list-group" ng-if="control.teacherData.length">
+                    <a href="javascript:;" id="{{item.head && item.name}}" class="list-group-item" ng-repeat="item in control.teacherData" ng-class="{'item-header':item.head,'item-header-title':item.style}" ng-click="!item.head&&item.uid&&control.checkedItems.click(item)" ng-switch on="item.head">
+
+                        <!--bind and unbind title-->
+                        <em ng-switch-when="false" ng-bind-html="item.name"></em>
+                        <!--顺序字母-->
+                        <b ng-switch-when="true" ng-bind="item.name"></b>
+
+                        <!--default-->
+                        <i ng-switch-default class="fa" ng-class="{true:'fa-check-circle',false:'fa-circle-thin'}[!!control.checkedItems.teacher[item.id]]"></i>
+
+                        <!--avatar-->
+                        <img class="avatar" ng-switch-default ng-src="{{(item.user.avatar?item.user.avatar+'!64':'')||'/assets/img/public/avatar-80.png'}}" />
+
+                        <!--title-->
+                        <span ng-switch-default ng-class="{'unbound':item.uid===0}">
+                            <b ng-bind="item.name+{true:' （未绑定）'}[item.uid===0]"></b>
+                            <span><b ng-bind="item.mobile"></b></span>
+                        </span>
+
+                    </a>
+                </div>
+
+
+            </div>
+            <div class="list-bottom">
+                <button type="button" class="btn" ng-disabled="!control.checkedItems.length" ng-click="control.backToPM()">确定({{control.checkedItems.length}})</button>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,53 @@
+<!-- 班级考试结果 -->
+<div class="class-exam-result-wrapper" >
+    <div class="exam-result-list">
+
+        <div class="exam-result-item exam-result-header">
+            <span class="exam-result-cell exam-result-name">姓名</span>
+            <span class="exam-result-cell exam-result-score">成绩</span>
+            <span class="exam-result-cell exam-result-rank">排名</span>
+        </div>
+        <div class="no-data-box" ng-if="dataList.length==0">暂无数据</div>
+        <a class="exam-result-item" href="#/{{data.student.id}}/student/exam/history/{{ data.courseid }}" ng-repeat="data in dataList" data-role="link">
+            <span class="exam-result-cell exam-result-name" ng-bind="data.student.name"></span>
+            <span class="exam-result-cell exam-result-score" ng-bind="data.score"></span>
+            <span class="exam-result-cell exam-result-rank"><i ng-class="{0:'score-A',1:'score-B',2:'score-C'}[$index]">{{ $index+1 }}</i></span>
+        </a>
+        <!-- <a class="exam-result-item" href="javascript:void(0)">
+            <span class="exam-result-cell exam-result-name">唐僧,慕容天提,日耳曼</span>
+            <span class="exam-result-cell exam-result-score">100</span>
+            <span class="exam-result-cell exam-result-rank"><i class="score-A">1</i></span>
+        </a>
+        <a class="exam-result-item" href="javascript:void(0)">
+            <span class="exam-result-cell exam-result-name">孙悟空</span>
+            <span class="exam-result-cell exam-result-score">99</span>
+            <span class="exam-result-cell exam-result-rank"><i class="score-B">2</i></span>
+        </a>
+        <a class="exam-result-item" href="javascript:void(0)">
+            <span class="exam-result-cell exam-result-name">猪八戒</span>
+            <span class="exam-result-cell exam-result-score">98</span>
+            <span class="exam-result-cell exam-result-rank"><i class="score-C">3</i></span>
+        </a>
+        <a class="exam-result-item" href="javascript:void(0)">
+            <span class="exam-result-cell exam-result-name">沙悟净</span>
+            <span class="exam-result-cell exam-result-score">85</span>
+            <span class="exam-result-cell exam-result-rank"><i >4</i></span>
+        </a>
+        <a class="exam-result-item" href="javascript:void(0)">
+            <span class="exam-result-cell exam-result-name">钢铁侠</span>
+            <span class="exam-result-cell exam-result-score">84</span>
+            <span class="exam-result-cell exam-result-rank"><i >5</i></span>
+        </a>
+        <a class="exam-result-item" href="javascript:void(0)">
+            <span class="exam-result-cell exam-result-name">蜘蛛侠</span>
+            <span class="exam-result-cell exam-result-score">80</span>
+            <span class="exam-result-cell exam-result-rank"><i >6</i></span>
+        </a>
+        <a class="exam-result-item" href="javascript:void(0)">
+            <span class="exam-result-cell exam-result-name">超人</span>
+            <span class="exam-result-cell exam-result-score">44</span>
+            <span class="exam-result-cell exam-result-rank"><i >7</i></span>
+        </a> -->
+    </div>
+</div>
+   

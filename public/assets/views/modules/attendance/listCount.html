@@ -1,0 +1,195 @@
+<div class="view-module-attendance" ng-controller="m.attendance.controller as control">
+    <div class="content-one" ng-if="control.params.action == 'total'">
+        <div class="header" ng-hide="control.params.router == 'none'">
+            <div class="input-append">
+                <input  class="date-input" type="text" datetimepicker  data-end-date="{{control.nowDate }}"  data-min-view="2" data-picker-position="bottom-left" data-format="yyyy-mm-dd" ng-model="control.searchData.starttime" ng-change="control.changeClass()"  readonly>
+                <span class="add-on"><i class="icon-calendar glyphicon glyphicon-calendar"></i></span>
+            </div>
+            <div class="input-class">
+                <select class="modelClassid" ng-options="opt.id as opt.name for opt in control.classes" ng-model="control.searchData.classid" ng-change="control.changeClass()" >
+                    <!--<option value="">全校</option>-->
+                </select>
+            </div>
+        </div>
+        <div class="wrap" ng-if="control.params.router == 'none'">
+            <div class="no-data-box">
+                <img src="/assets/img/public/none-inferior.gif" alt="">
+                <p>无关联班级</p>
+            </div>
+        </div>
+        <div class="wrapper" ng-if="control.params.router == 'total'">
+            <div class="totle-title" ng-bind="control.studentTotle" ng-if="control.schoolTotalList.length"></div>
+            <ul class="box" ng-if="control.schoolTotalList.length">
+                <li ng-repeat="item in control.schoolTotalList">
+                    <h3><span ng-bind="item.name" ng-class="item.name.length>4 && 'text-more'"></span></h3>
+                    <table>
+                        <tr>
+                            <td><i>打卡</i><span>{{ item.daycount }}人</span></td>
+                            <td><i>未打卡</i><span>{{item.notpunch}}人</span></td>
+                        </tr>
+                        <tr>
+                            <td><i ng-bind="{true:'迟到',false:'早退'}[item.hasLater]"> </i><span>{{ {true:item.latercount,false:item.earlycount}[item.hasLater] }}人</span></td>
+                            <td><i>总共</i><span>{{item.count}}人</span></td>
+                        </tr>
+                    </table>
+                </li>
+            </ul>
+            <div class="totle-title" ng-bind="control.teacherTotle" ng-if="control.schoolTeacherTotalList.length"></div>
+            <ul class="box" ng-if="control.schoolTeacherTotalList.length">
+                <li ng-repeat="item in control.schoolTeacherTotalList">
+                    <h3><span ng-bind="item.name" ng-class="item.name.length>4 && 'text-more'"></span></h3>
+                    <table>
+                        <tr>
+                            <td><i>打卡</i><span>{{ item.daycount }}人</span></td>
+                            <td><i>未打卡</i><span>{{item.notpunch}}人</span></td>
+                        </tr>
+                        <tr>
+                            <td><i ng-bind="{true:'迟到',false:'早退'}[item.hasLater]"> </i><span>{{ {true:item.latercount,false:item.earlycount}[item.hasLater] }}人</span></td>
+                            <td><i>总共</i><span>{{item.count}}人</span></td>
+                        </tr>
+                    </table>
+                </li>
+            </ul>
+            <div class="no-data-box" ng-if="(control.schoolTotalList && !control.schoolTotalList.length) && (control.schoolTeacherTotalList && !control.schoolTeacherTotalList.length)">
+                <img src="/assets/img/public/none-inferior.gif" alt="">
+                <p>暂时没有内容</p>
+            </div>
+        </div>
+        <!--//班级考勤-->
+        <div class="wrap" ng-if="control.params.router == 'class'">
+            <div class="tabs">
+                <div class="tabs-flex">
+                    <a href="javascript:;" hidefocus="true" ng-repeat="(key,item) in control.attendListData.countData" ng-click="control.attendListData.getData(item.key,key)"
+                       ng-class="{true:'active'}[item.key == control.attendListData.checked]">
+                        <span ng-bind="item.name"></span>
+                    </a>
+                </div>
+              <!--  <button id="left">left</button>
+                <button id="right">right</button>-->
+            </div>
+            <div class="swiper-container">
+                <div class="content-slide">
+                    <ul class="clearfix">
+                        <li>打卡 <span ng-bind="control.attendListData.data.count.daycount"></span></li>
+                        <li><span ng-bind="{true:'迟',false:'早'}[control.attendListData.data.count.isLater] "></span><span ng-bind="control.attendListData.data.count.unusual"></span></li>
+                        <li>未打卡<span ng-bind="control.attendListData.data.count.absentcount"></span></li>
+                        <li>总共<span ng-bind="control.attendListData.sum"></span>人</li>
+                    </ul>
+                    <div class="content-table">
+                        <table width="100%" border="0" class="table table-hover">
+                            <tr ng-repeat="item in control.attendListData.data.list">
+                                <td width="22%"><a ng-href="{{control.location + control.searchData.classid +'/'+ item.id }}"> <span ng-bind="item.name"></span></a></td>
+                                <td width="50%">
+                                    <a ng-href="{{control.location + control.searchData.classid +'/' + item.id }}">
+                                        <span ng-bind="item.attend.checktime"></span>
+                                    </a>
+                                </td>
+                                <td width="28%">
+                                    <a ng-href="{{control.location + control.searchData.classid +'/'+ item.id }}" >
+                                        <i class="state" ng-class="{0:'text-red',1:'text-red',4:'text-red',5:'text-red'}[item.attend.checkstatus]" ng-bind="{0:'缺勤',1:'未打卡',2:'正常考勤',3:'正常刷卡',4:'迟到',5:'早退',6:'请假',7:'旷课',8:'其他'}[item.attend.checkstatus]"></i>
+                                        <span class="arrow glyphicon glyphicon-menu-right"> </span>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <div ng-if="control.attendListData.data.list && control.attendListData.data.list.length===0" class="no-data-box no-data-relative" >
+                                        <img src="/assets/img/public/none-inferior.gif" alt="">
+                                        <p>暂时没有内容</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--//全体教师考勤-->
+        <div class="wrap" ng-if="control.params.router == 'teacher'">
+            <div class="tabs">
+                <div class="tabs-flex">
+                    <a href="javascript:;" hidefocus="true" ng-repeat="(key,item) in control.attendListData.countData" ng-click="control.attendListData.getData(item.key,key)"
+                       ng-class="{true:'active'}[item.key == control.attendListData.checked]">
+                        <span ng-bind="item.name"></span>
+                    </a>
+                </div>
+              <!--  <button id="left">left</button>
+                <button id="right">right</button>-->
+            </div>
+            <div class="swiper-container">
+                <div class="content-slide">
+                    <ul class="clearfix">
+                        <li>打卡 <span ng-bind="control.attendListData.data.count.daycount"></span></li>
+                        <li><span ng-bind="{true:'迟',false:'早'}[control.attendListData.data.count.isLater] "></span><span ng-bind="control.attendListData.data.count.unusual"></span></li>
+                        <li>未打卡<span ng-bind="control.attendListData.data.count.absentcount"></span></li>
+                        <li>总共<span ng-bind="control.attendListData.sum"></span>人</li>
+                    </ul>
+                    <div class="content-table">
+                        <table width="100%" border="0" class="table table-hover">
+                            <tr ng-repeat="item in control.attendListData.data.list">
+                                <td width="22%"><a ng-href="{{control.location + control.searchData.classid + '/'+ item.id }}"> <span ng-bind="item.name"></span></a></td>
+                                <td width="50%">
+                                    <a ng-href="{{control.location + control.searchData.classid + '/' + item.id }}">
+                                        <span ng-bind="item.attend.checktime"></span>
+                                    </a>
+                                </td>
+                                <td width="28%">
+                                    <a ng-href="{{control.location + control.searchData.classid + '/'+ item.id }}" >
+                                        <i class="state" ng-class="{0:'text-red',1:'text-red',4:'text-red',5:'text-red'}[item.attend.checkstatus]" ng-bind="{0:'缺勤',1:'未打卡',2:'正常考勤',3:'正常刷卡',4:'迟到',5:'早退',6:'请假',7:'旷课',8:'其他'}[item.attend.checkstatus]"></i>
+                                        <span class="arrow glyphicon glyphicon-menu-right"> </span>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <div ng-if="control.attendListData.data.list && control.attendListData.data.list.length===0" class="no-data-box no-data-relative" >
+                                        <img src="/assets/img/public/none-inferior.gif" alt="">
+                                        <p>暂时没有内容</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--//个人考勤-->
+    <div class="studentList" ng-if="control.params.action == 'student'">
+        <div class="page-content" ng-class="control.studentAttendList.length&&'hasLength'">
+            <dl class="record_list" ng-class="{true:'current'}[key==0]" ng-repeat=" (key,item) in control.studentAttendList | orderBy:'day':true ">
+                <dt> <span class="txt" ng-bind="item.date"></span><i class="glyphicon glyphicon-record"></i> </dt>
+                <dd>
+                    <div ng-repeat="note in item.attendList" class="detail-list">
+                        <p  ng-class="{0:'text-red',1:'text-red',4:'text-red',5:'text-red'}[note.checkstatus]"><i class="glyphicon glyphicon-time"></i><span class="time" >{{note.checktime}}</span> <span ng-bind="note.name"></span> </p>
+                        <div class="pic" ng-if="note.webiconpath"><img class="img" ng-src="{{note.webiconpath}}"></div>
+                    </div>
+                </dd>
+            </dl>
+            <div class="no-data-box ng-cloak" ng-show="control.studentAttendList.length==0">
+                <img src="/assets/img/public/none.gif" alt="">
+                <p>暂时没有内容</p>
+            </div>
+        </div>
+        <!--<div class="loadingMore" ng-hide="control.studentAttendList.length==0">
+            <a href="javascript:void(0)" ng-click="control.loadMore()">更多...</a>
+        </div>-->
+    </div>
+    <div class="studentList" ng-if="control.params.action == 'teacher'">
+        <div class="page-content" ng-class="control.teacherAttendList.length&&'hasLength'">
+            <dl class="record_list" ng-class="{true:'current'}[key==0]" ng-repeat=" (key,item) in control.teacherAttendList | orderBy:'day':true ">
+                <dt> <span class="txt" ng-bind="item.date"></span><i class="glyphicon glyphicon-record"></i> </dt>
+                <dd>
+                    <div ng-repeat="note in item.attendList" class="detail-list">
+                        <p  ng-class="{0:'text-red',1:'text-red',4:'text-red',5:'text-red'}[note.checkstatus]"><i class="glyphicon glyphicon-time"></i><span class="time" >{{note.checktime}}</span> <span ng-bind="note.name"></span> </p>
+                        <div class="pic" ng-if="note.webiconpath"><img class="img" ng-src="{{note.webiconpath}}"></div>
+                    </div>
+                </dd>
+            </dl>
+            <div class="no-data-box ng-cloak" ng-show="control.teacherAttendList.length==0">
+                <img src="/assets/img/public/none.gif" alt="">
+                <p>暂时没有内容</p>
+            </div>
+        </div>
+    </div>
+</div>
